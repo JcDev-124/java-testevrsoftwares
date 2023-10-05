@@ -7,6 +7,7 @@ package br.com.vrsoftware.controller;
 import br.com.software.model.Cliente;
 import br.com.vrsoftware.dao.ClienteDao;
 import br.com.vrsoftware.dao.DaoFactory;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,9 +19,18 @@ public class ClienteController {
     }
     
     
-    public void inserirCliente(Cliente obj){
-            ClienteDao clienteDao = DaoFactory.createClienteDao();
-            clienteDao.insert(obj);
+public void inserirCliente(Cliente obj) {
+    ClienteDao clienteDao = DaoFactory.createClienteDao();
+
+    // Verifica se o cliente já está cadastrado
+    Cliente clienteExistente = clienteDao.findById(obj.getNome());
+
+    if (clienteExistente != null) {
+        JOptionPane.showMessageDialog(null, "ERRO, CLIENTE JA CADASTRADO", "Erro", JOptionPane.ERROR_MESSAGE);
+    } else {
+        // O cliente não existe, então podemos inserir
+        clienteDao.insert(obj);
     }
-    
+}
+
 }

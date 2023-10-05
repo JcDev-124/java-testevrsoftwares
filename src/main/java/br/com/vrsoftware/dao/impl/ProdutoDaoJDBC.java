@@ -1,7 +1,7 @@
 package br.com.vrsoftware.dao.impl;
 
-import br.com.software.model.Cliente;
-import br.com.vrsoftware.dao.ClienteDao;
+import br.com.software.model.Produto;
+import br.com.vrsoftware.dao.ProdutoDao;
 import br.com.vrsoftware.exceptions.db.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 
@@ -9,30 +9,31 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDaoJDBC implements ClienteDao {
+public class ProdutoDaoJDBC implements ProdutoDao {
 
     private Connection conn;
 
-    public ClienteDaoJDBC(Connection conn) {
+    public ProdutoDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
-    @Override
-    public void insert(Cliente obj) {
+@Override
+    public void insert(Produto obj) {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO Clientes (Nome) VALUES (?) RETURNING Id"
+                    "INSERT INTO produtos (descricao, preco, quantidade) VALUES (?, ?, ?) RETURNING id"
             );
-            st.setString(1, obj.getNome());
+            st.setString(1, obj.getDescricao());
+            st.setDouble(2, obj.getPreco());
+            st.setInt(3, obj.getQuantidade());
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("Id");
+                int id = rs.getInt("id");
                 obj.setId(id);
             } else {
                 throw new DbException("Erro inesperado! Nenhuma linha afetada!");
@@ -45,16 +46,16 @@ public class ClienteDaoJDBC implements ClienteDao {
     }
 
     @Override
-    public Cliente findById(String nome) {
+    public Produto findById(String descricao) {
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM Clientes WHERE nome = ?");
-            st.setString(1, nome);
+            st = conn.prepareStatement("SELECT * FROM produtos WHERE descricao = ?");
+            st.setString(1, descricao);
             rs = st.executeQuery();
             if (rs.next()) {
-                return instantiateCliente(rs);
+                return instantiateProduto(rs);
             }
             return null;
         } catch (SQLException e) {
@@ -65,25 +66,27 @@ public class ClienteDaoJDBC implements ClienteDao {
         }
     }
 
-    private Cliente instantiateCliente(ResultSet rs) throws SQLException {
-        Cliente obj = new Cliente();
-        obj.setId(rs.getInt("Id"));
-        obj.setNome(rs.getString("Nome"));
+    private Produto instantiateProduto(ResultSet rs) throws SQLException {
+        Produto obj = new Produto();
+        obj.setId(rs.getInt("id"));
+        obj.setDescricao(rs.getString("descricao"));
+        obj.setPreco(rs.getDouble("preco"));
+        obj.setQuantidade(rs.getInt("quantidade"));
         return obj;
     }
 
     @Override
-    public List<Cliente> findAll() {
+    public List<Produto> findAll() {
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM Clientes ORDER BY Nome");
+            st = conn.prepareStatement("SELECT * FROM produtos ORDER BY descricao");
             rs = st.executeQuery();
 
-            List<Cliente> list = new ArrayList<>();
+            List<Produto> list = new ArrayList<>();
             while (rs.next()) {
-                Cliente obj = instantiateCliente(rs);
+                Produto obj = instantiateProduto(rs);
                 list.add(obj);
             }
             return list;
