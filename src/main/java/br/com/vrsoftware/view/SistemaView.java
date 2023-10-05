@@ -4,6 +4,8 @@
  */
 package br.com.vrsoftware.view;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Julio
@@ -43,6 +45,11 @@ public class SistemaView extends javax.swing.JFrame {
         menuCadastro.setText("Registrar");
 
         menuCadCliente.setText("Cliente");
+        menuCadCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadClienteActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadCliente);
 
         menuCadProduto.setText("Produto");
@@ -71,6 +78,16 @@ public class SistemaView extends javax.swing.JFrame {
         menuMain.add(menuPesquisa);
 
         menuSair.setText("Sair");
+        menuSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuSairMouseClicked(evt);
+            }
+        });
+        menuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSairActionPerformed(evt);
+            }
+        });
         menuMain.add(menuSair);
 
         setJMenuBar(menuMain);
@@ -102,6 +119,24 @@ public class SistemaView extends javax.swing.JFrame {
     private void menuCadVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadVendaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuCadVendaActionPerformed
+
+    private void menuCadClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadClienteActionPerformed
+        this.dispose();
+        ClienteView c = new ClienteView();
+        c.setVisible(true);
+        c.setLocationRelativeTo(null);
+    }//GEN-LAST:event_menuCadClienteActionPerformed
+
+    private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
+    
+    }//GEN-LAST:event_menuSairActionPerformed
+
+    private void menuSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuSairMouseClicked
+        String msg = "Deseja sair do sistema?";
+        int opcao = JOptionPane.showConfirmDialog(null, msg, "Sistema", JOptionPane.YES_NO_OPTION);
+        if(opcao == JOptionPane.YES_OPTION)        System.exit(0);
+
+    }//GEN-LAST:event_menuSairMouseClicked
 
     /**
      * @param args the command line arguments
