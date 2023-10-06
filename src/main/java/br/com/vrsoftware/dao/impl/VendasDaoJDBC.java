@@ -27,10 +27,10 @@ public class VendasDaoJDBC implements VendasDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO vendas (data, ID_CLIENTE, status) VALUES (?, ?, ?) RETURNING ID"
+                    "INSERT INTO vendas (data, cliente_id, status) VALUES (?, ?, ?) RETURNING ID"
             );
             st.setDate(1, obj.getData() != null ? new java.sql.Date(obj.getData().toEpochMilli()) : null);
-            st.setInt(2, obj.getId());
+            st.setInt(2, obj.getCliente());
             st.setString(3, obj.pegarStatus().name());
 
             ResultSet rs = st.executeQuery();
@@ -53,7 +53,7 @@ public class VendasDaoJDBC implements VendasDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM vendas WHERE ID = ?");
+            st = conn.prepareStatement("SELECT * FROM vendas WHERE id = ?");
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {

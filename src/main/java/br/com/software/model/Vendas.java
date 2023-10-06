@@ -20,7 +20,7 @@ public class Vendas {
 
     public Vendas(){}
     
-    public Vendas(Integer id, Instant data, Integer id_cliente, EnumStatus status) {
+    public Vendas(Instant data, Integer id_cliente, EnumStatus status) {
         this.id = id;
         this.data = data;
         this.id_cliente = id_cliente;

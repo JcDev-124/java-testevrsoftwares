@@ -5,7 +5,6 @@
 package br.com.vrsoftware.dao.impl;
 
 // Importações omitidas para brevidade
-
 import br.com.software.model.OrdemVenda;
 import br.com.vrsoftware.dao.OrdemVendasDao;
 import br.com.vrsoftware.exceptions.db.DB;
@@ -17,7 +16,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class OrdemVendasDaoJDBC implements OrdemVendasDao {
 
     private Connection conn;
@@ -26,11 +24,11 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
         this.conn = conn;
     }
 
-    public OrdemVenda findById(Integer id){
+    public OrdemVenda findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        
-            try {
+
+        try {
             st = conn.prepareStatement("SELECT * FROM OrdemDeVenda WHERE id_ordem_de_venda = ?");
             st.setInt(1, id);
             rs = st.executeQuery();
@@ -46,14 +44,14 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
             DB.CloseResultSet(rs);
         }
     }
-    
+
     public void insert(OrdemVenda ordemDeVenda) {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
                     "INSERT INTO OrdemDeVenda (id_venda, id_produto, quantidade, preco) VALUES (?, ?, ?, ?)"
             );
-            st.setInt(1, ordemDeVenda.getIdVenda());
+            st.setNull(1, java.sql.Types.INTEGER);  // Deixa id_venda como nulo inicialmente
             st.setInt(2, ordemDeVenda.getIdProduto());
             st.setInt(3, ordemDeVenda.getQuantidade());
             st.setDouble(4, ordemDeVenda.getPreco());
@@ -99,11 +97,4 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
         return ordemDeVenda;
     }
 
-  
-
-
-
-
-
 }
-
