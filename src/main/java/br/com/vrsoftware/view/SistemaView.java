@@ -53,6 +53,11 @@ public class SistemaView extends javax.swing.JFrame {
         menuCadastro.add(menuCadCliente);
 
         menuCadProduto.setText("Produto");
+        menuCadProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadProdutoActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadProduto);
 
         menuCadVenda.setText("Venda");
@@ -137,6 +142,14 @@ public class SistemaView extends javax.swing.JFrame {
         if(opcao == JOptionPane.YES_OPTION)        System.exit(0);
 
     }//GEN-LAST:event_menuSairMouseClicked
+
+    private void menuCadProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadProdutoActionPerformed
+                // TODO add your handling code here:
+        this.dispose();
+        ProdutoView v = new ProdutoView();
+        v.setVisible(true);
+        v.setLocationRelativeTo(null);
+    }//GEN-LAST:event_menuCadProdutoActionPerformed
 
     /**
      * @param args the command line arguments

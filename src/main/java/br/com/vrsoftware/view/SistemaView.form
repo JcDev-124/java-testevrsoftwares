@@ -21,6 +21,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Produto"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCadProdutoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuCadVenda">
               <Properties>
