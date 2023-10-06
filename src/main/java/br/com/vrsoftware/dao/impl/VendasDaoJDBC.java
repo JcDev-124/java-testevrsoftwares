@@ -29,6 +29,7 @@ public class VendasDaoJDBC implements VendasDao {
             st = conn.prepareStatement(
                     "INSERT INTO vendas (data, cliente_id, status) VALUES (?, ?, ?) RETURNING ID"
             );
+            
             st.setDate(1, obj.getData() != null ? new java.sql.Date(obj.getData().toEpochMilli()) : null);
             st.setInt(2, obj.getCliente());
             st.setString(3, obj.pegarStatus().name());
@@ -47,6 +48,7 @@ public class VendasDaoJDBC implements VendasDao {
         }
     }
 
+ 
     @Override
     public Vendas findById(Integer id) {
         PreparedStatement st = null;
@@ -100,6 +102,8 @@ public class VendasDaoJDBC implements VendasDao {
             DB.CloseResultSet(rs);
         }
     }
+    
+    
 
-
+    
 }

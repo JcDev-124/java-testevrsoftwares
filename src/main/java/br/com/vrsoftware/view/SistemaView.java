@@ -48,7 +48,7 @@ public class SistemaView extends javax.swing.JFrame {
         menuCadProduto = new javax.swing.JMenuItem();
         menuCadVenda = new javax.swing.JMenuItem();
         menuPesquisa = new javax.swing.JMenu();
-        menuPesqCliente = new javax.swing.JMenuItem();
+        menuPesqVenda = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,13 +83,13 @@ public class SistemaView extends javax.swing.JFrame {
 
         menuPesquisa.setText("Pesquisar");
 
-        menuPesqCliente.setText("Cliente");
-        menuPesqCliente.addActionListener(new java.awt.event.ActionListener() {
+        menuPesqVenda.setText("Venda");
+        menuPesqVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPesqClienteActionPerformed(evt);
+                menuPesqVendaActionPerformed(evt);
             }
         });
-        menuPesquisa.add(menuPesqCliente);
+        menuPesquisa.add(menuPesqVenda);
 
         menuMain.add(menuPesquisa);
 
@@ -122,9 +122,13 @@ public class SistemaView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuPesqClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPesqClienteActionPerformed
+    private void menuPesqVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPesqVendaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_menuPesqClienteActionPerformed
+        this.dispose();
+        PesquisaView p = new PesquisaView();
+        p.setVisible(true);
+        p.setLocationRelativeTo(null);
+    }//GEN-LAST:event_menuPesqVendaActionPerformed
 
     private void menuCadVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadVendaActionPerformed
         // TODO add your handling code here:
@@ -201,7 +205,7 @@ public class SistemaView extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCadVenda;
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenuBar menuMain;
-    private javax.swing.JMenuItem menuPesqCliente;
+    private javax.swing.JMenuItem menuPesqVenda;
     private javax.swing.JMenu menuPesquisa;
     private javax.swing.JMenu menuSair;
     // End of variables declaration//GEN-END:variables

@@ -40,12 +40,12 @@
             <Property name="text" type="java.lang.String" value="Pesquisar"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuPesqCliente">
+            <MenuItem class="javax.swing.JMenuItem" name="menuPesqVenda">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cliente"/>
+                <Property name="text" type="java.lang.String" value="Venda"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPesqClienteActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPesqVendaActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

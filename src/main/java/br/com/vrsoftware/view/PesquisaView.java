@@ -47,6 +47,7 @@ public class PesquisaView extends javax.swing.JFrame {
         btbLimpar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblVendas = new javax.swing.JTable();
+        btnFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,6 +76,14 @@ public class PesquisaView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblVendas);
 
+        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnFechar.setText("X");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,7 +97,9 @@ public class PesquisaView extends javax.swing.JFrame {
                 .addComponent(btnPesquisar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btbLimpar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -98,7 +109,8 @@ public class PesquisaView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnPesquisar)
-                        .addComponent(btbLimpar))
+                        .addComponent(btbLimpar)
+                        .addComponent(btnFechar))
                     .addComponent(dtVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblData))
                 .addGap(18, 18, 18)
@@ -111,6 +123,14 @@ public class PesquisaView extends javax.swing.JFrame {
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        SistemaView v = new SistemaView();
+        v.setVisible(true);
+        v.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnFecharActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,6 +169,7 @@ public class PesquisaView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btbLimpar;
+    private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisar;
     private com.toedter.calendar.JDateChooser dtVenda;
     private javax.swing.JScrollPane jScrollPane1;
