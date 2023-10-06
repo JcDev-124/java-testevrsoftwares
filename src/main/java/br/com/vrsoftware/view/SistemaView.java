@@ -4,6 +4,8 @@
  */
 package br.com.vrsoftware.view;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,6 +18,18 @@ public class SistemaView extends javax.swing.JFrame {
      * Creates new form SistemaView
      */
     public SistemaView() {
+            // Definir tamanho da tela
+    int larguraTela = 500;
+    int alturaTela = 400;
+    this.setSize(larguraTela, alturaTela);
+
+    // Obter as dimensões da tela
+    Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
+
+    // Calcular a localização para centralizar na tela
+    int x = (dimensoesTela.width - larguraTela) / 2;
+    int y = (dimensoesTela.height - alturaTela) / 2;
+    this.setLocation(x, y);
         initComponents();
     }
 
@@ -123,6 +137,10 @@ public class SistemaView extends javax.swing.JFrame {
 
     private void menuCadVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadVendaActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        VendaView v = new VendaView();
+        v.setVisible(true);
+        v.setLocationRelativeTo(null);
     }//GEN-LAST:event_menuCadVendaActionPerformed
 
     private void menuCadClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadClienteActionPerformed

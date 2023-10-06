@@ -4,6 +4,9 @@
  */
 package br.com.vrsoftware.view;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  *
  * @author Julio
@@ -14,6 +17,18 @@ public class PesquisaView extends javax.swing.JFrame {
      * Creates new form PesquisaView
      */
     public PesquisaView() {
+        // Definir tamanho da tela
+        int larguraTela = 500;
+        int alturaTela = 400;
+        this.setSize(larguraTela, alturaTela);
+
+        // Obter as dimensões da tela
+        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Calcular a localização para centralizar na tela
+        int x = (dimensoesTela.width - larguraTela) / 2;
+        int y = (dimensoesTela.height - alturaTela) / 2;
+        this.setLocation(x, y);
         initComponents();
     }
 

@@ -4,10 +4,10 @@
  */
 package br.com.vrsoftware.view;
 
-import br.com.software.model.Cliente;
 import br.com.software.model.Produto;
-import br.com.vrsoftware.controller.ClienteController;
 import br.com.vrsoftware.controller.ProdutoController;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -17,13 +17,25 @@ import javax.swing.table.DefaultTableModel;
  * @author Julio
  */
 public class ProdutoView extends javax.swing.JFrame {
-    
+
     private DefaultTableModel model;
 
     /**
      * Creates new form ProdutoView
      */
     public ProdutoView() {
+        // Definir tamanho da tela
+        int larguraTela = 500;
+        int alturaTela = 400;
+        this.setSize(larguraTela, alturaTela);
+
+        // Obter as dimensões da tela
+        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Calcular a localização para centralizar na tela
+        int x = (dimensoesTela.width - larguraTela) / 2;
+        int y = (dimensoesTela.height - alturaTela) / 2;
+        this.setLocation(x, y);
         initComponents();
         carregarDadosTabela();
     }
@@ -143,55 +155,53 @@ public class ProdutoView extends javax.swing.JFrame {
         String descricao = txtDescricao.getText();
         Integer quantidade = Integer.parseInt(txtQuantidade.getText());
         Double preco = Double.parseDouble(txtPreco.getText());
-        
+
         Produto produto = new Produto(null, descricao, preco, quantidade);
         ProdutoController controller = new ProdutoController();
-        
+
         controller.inserirProduto(produto);
-        
+
         txtDescricao.setText("");
         txtQuantidade.setText("");
         txtPreco.setText("");
-        
+
         model.addRow(new Object[]{controller.pegarIdProduto(produto),
-        descricao, quantidade, preco});
-        
+            descricao, quantidade, preco});
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-       private void carregarDadosTabela(){
-        
+    private void carregarDadosTabela() {
+
         Integer id_aux;
         String descricao_aux;
         Integer quantidade_aux;
         Double preco_aux;
-        
+
         ProdutoController controller = new ProdutoController();
         List<Produto> produtos = controller.retornaTodosProdutos();
-        
+
         tblProduto.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblProduto.getColumnModel().getColumn(0).setPreferredWidth(70);
         tblProduto.getColumnModel().getColumn(1).setPreferredWidth(150);
         tblProduto.getColumnModel().getColumn(2).setPreferredWidth(150);
         tblProduto.getColumnModel().getColumn(3).setPreferredWidth(150);
 
-
-        
         model = (DefaultTableModel) tblProduto.getModel();
-        
-        for(Produto x: produtos){
+
+        for (Produto x : produtos) {
             id_aux = x.getId();
             descricao_aux = x.getDescricao();
             quantidade_aux = x.getQuantidade();
             preco_aux = x.getPreco();
-            
-            model.addRow(new Object[]{id_aux, descricao_aux, quantidade_aux, preco_aux });
+
+            model.addRow(new Object[]{id_aux, descricao_aux, quantidade_aux, preco_aux});
         }
 
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
