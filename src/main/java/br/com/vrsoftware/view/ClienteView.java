@@ -136,8 +136,7 @@ public class ClienteView extends javax.swing.JFrame {
         controller.inserirCliente(cliente);
         txtNome.setText("");
 
-        model.addRow(new Object[]{controller.pegarIdCliente(cliente),
-            nome});
+       
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 

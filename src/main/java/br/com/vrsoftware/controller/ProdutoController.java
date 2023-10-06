@@ -40,5 +40,8 @@ public class ProdutoController {
 public List<Produto> retornaTodosProdutos(){
     return produtoDao.findAll();
 }
-    
+
+public Double retornaPrecoProduto(String nome){
+       return produtoDao.findById(nome).getPreco();
+}
 }
