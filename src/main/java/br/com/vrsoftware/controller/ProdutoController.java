@@ -4,9 +4,11 @@
  */
 package br.com.vrsoftware.controller;
 
+import br.com.software.model.Cliente;
 import br.com.software.model.Produto;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.ProdutoDao;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,10 +18,10 @@ import javax.swing.JOptionPane;
 public class ProdutoController {
     
     public ProdutoController(){}
+    ProdutoDao produtoDao = DaoFactory.createProdutoDao();
     
  public void inserirProduto(Produto obj){
     
-    ProdutoDao produtoDao = DaoFactory.createProdutoDao();
 
     Produto produtoExistente = produtoDao.findById(obj.getDescricao());
 
@@ -30,5 +32,13 @@ public class ProdutoController {
     }
         
     }
+ 
+ public Integer pegarIdProduto(Produto obj){
+    return produtoDao.findById(obj.getDescricao()).getId();
+}
+
+public List<Produto> retornaTodosProdutos(){
+    return produtoDao.findAll();
+}
     
 }

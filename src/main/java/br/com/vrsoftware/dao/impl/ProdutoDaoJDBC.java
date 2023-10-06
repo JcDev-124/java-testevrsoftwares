@@ -81,7 +81,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM produtos ORDER BY descricao");
+            st = conn.prepareStatement("SELECT * FROM produtos ORDER BY id");
             rs = st.executeQuery();
 
             List<Produto> list = new ArrayList<>();

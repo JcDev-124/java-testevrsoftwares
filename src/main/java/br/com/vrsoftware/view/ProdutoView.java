@@ -4,20 +4,28 @@
  */
 package br.com.vrsoftware.view;
 
+import br.com.software.model.Cliente;
 import br.com.software.model.Produto;
+import br.com.vrsoftware.controller.ClienteController;
 import br.com.vrsoftware.controller.ProdutoController;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Julio
  */
 public class ProdutoView extends javax.swing.JFrame {
+    
+    private DefaultTableModel model;
 
     /**
      * Creates new form ProdutoView
      */
     public ProdutoView() {
         initComponents();
+        carregarDadosTabela();
     }
 
     /**
@@ -98,13 +106,10 @@ public class ProdutoView extends javax.swing.JFrame {
 
         tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Id", "Quantidade", "Preço"
+                "Id", "Descricao", "Quantidade", "Preço"
             }
         ));
         jScrollPane1.setViewportView(tblProduto);
@@ -148,11 +153,45 @@ public class ProdutoView extends javax.swing.JFrame {
         txtQuantidade.setText("");
         txtPreco.setText("");
         
+        model.addRow(new Object[]{controller.pegarIdProduto(produto),
+        descricao, quantidade, preco});
+        
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+       private void carregarDadosTabela(){
+        
+        Integer id_aux;
+        String descricao_aux;
+        Integer quantidade_aux;
+        Double preco_aux;
+        
+        ProdutoController controller = new ProdutoController();
+        List<Produto> produtos = controller.retornaTodosProdutos();
+        
+        tblProduto.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tblProduto.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tblProduto.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblProduto.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tblProduto.getColumnModel().getColumn(3).setPreferredWidth(150);
+
+
+        
+        model = (DefaultTableModel) tblProduto.getModel();
+        
+        for(Produto x: produtos){
+            id_aux = x.getId();
+            descricao_aux = x.getDescricao();
+            quantidade_aux = x.getQuantidade();
+            preco_aux = x.getPreco();
+            
+            model.addRow(new Object[]{id_aux, descricao_aux, quantidade_aux, preco_aux });
+        }
+
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

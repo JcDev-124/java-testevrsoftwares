@@ -6,18 +6,23 @@ package br.com.vrsoftware.view;
 
 import br.com.software.model.Cliente;
 import br.com.vrsoftware.controller.ClienteController;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Julio
  */
 public class ClienteView extends javax.swing.JFrame {
-
+    
+    private DefaultTableModel model;
     /**
      * Creates new form ClienteView
      */
     public ClienteView() {
         initComponents();
+        carregarDadosTabela();
     }
 
     /**
@@ -75,10 +80,7 @@ public class ClienteView extends javax.swing.JFrame {
 
         tblCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Id", "Nome"
@@ -116,8 +118,32 @@ public class ClienteView extends javax.swing.JFrame {
         controller.inserirCliente(cliente);
         txtNome.setText("");
         
+        model.addRow(new Object[]{controller.pegarIdCliente(cliente),
+        nome});
+        
     }//GEN-LAST:event_btnSalvarActionPerformed
+    
+    private void carregarDadosTabela(){
+        
+        Integer id_aux;
+        String nome_aux;
+        ClienteController controller = new ClienteController();
+        List<Cliente> clientes = controller.retornaTodosClientes();
+        
+        tblCliente.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tblCliente.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tblCliente.getColumnModel().getColumn(1).setPreferredWidth(400);
+        
+        model = (DefaultTableModel) tblCliente.getModel();
+        
+        for(Cliente x: clientes){
+            id_aux = x.getId();
+            nome_aux = x.getNome();
+            
+            model.addRow(new Object[]{id_aux, nome_aux});
+        }
 
+    }
     /**
      * @param args the command line arguments
      */
@@ -152,6 +178,8 @@ public class ClienteView extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;

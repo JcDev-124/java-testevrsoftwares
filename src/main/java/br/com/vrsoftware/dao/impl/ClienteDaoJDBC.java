@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class ClienteDaoJDBC implements ClienteDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM Clientes ORDER BY Nome");
+            st = conn.prepareStatement("SELECT * FROM Clientes ORDER BY id");
             rs = st.executeQuery();
 
             List<Cliente> list = new ArrayList<>();
