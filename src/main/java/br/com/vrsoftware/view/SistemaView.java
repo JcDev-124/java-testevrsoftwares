@@ -42,7 +42,6 @@ public class SistemaView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnCadCliente = new javax.swing.JButton();
         menuMain = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         menuCadCliente = new javax.swing.JMenuItem();
@@ -53,8 +52,6 @@ public class SistemaView extends javax.swing.JFrame {
         menuSair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnCadCliente.setText("Clientes");
 
         menuCadastro.setText("Registrar");
 
@@ -115,17 +112,11 @@ public class SistemaView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnCadCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(268, Short.MAX_VALUE))
+            .addGap(0, 460, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(btnCadCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(181, Short.MAX_VALUE))
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         pack();
@@ -205,7 +196,6 @@ public class SistemaView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadCliente;
     private javax.swing.JMenuItem menuCadCliente;
     private javax.swing.JMenuItem menuCadProduto;
     private javax.swing.JMenuItem menuCadVenda;

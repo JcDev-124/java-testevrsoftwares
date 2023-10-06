@@ -1,7 +1,8 @@
 package br.com.vrsoftware.dao.impl;
 
-import br.com.software.model.Produto;
-import br.com.vrsoftware.dao.ProdutoDao;
+import br.com.software.model.EnumStatus;
+import br.com.software.model.Vendas;
+import br.com.vrsoftware.dao.VendasDao;
 import br.com.vrsoftware.exceptions.db.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 
@@ -9,31 +10,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDaoJDBC implements ProdutoDao {
+public class VendasDaoJDBC implements VendasDao {
 
     private Connection conn;
 
-    public ProdutoDaoJDBC(Connection conn) {
+    public VendasDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
     @Override
- public void insert(Produto obj) {
+    public void insert(Vendas obj) {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO produtos (descricao, preco, quantidade) VALUES (?, ?, ?) RETURNING id"
+                    "INSERT INTO vendas (data, ID_CLIENTE, status) VALUES (?, ?, ?) RETURNING ID"
             );
-            st.setString(1, obj.getDescricao());
-            st.setDouble(2, obj.getPreco());
-            st.setInt(3, obj.getQuantidade());
+            st.setDate(1, obj.getData() != null ? new java.sql.Date(obj.getData().toEpochMilli()) : null);
+            st.setInt(2, obj.getId());
+            st.setString(3, obj.pegarStatus().name());
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("id");
+                int id = rs.getInt("ID");
                 obj.setId(id);
             } else {
                 throw new DbException("Erro inesperado! Nenhuma linha afetada!");
@@ -46,16 +48,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public Produto findById(String descricao) {
+    public Vendas findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM produtos WHERE descricao = ?");
-            st.setString(1, descricao);
+            st = conn.prepareStatement("SELECT * FROM vendas WHERE ID = ?");
+            st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                return instantiateProduto(rs);
+                return instantiateVenda(rs);
             }
             return null;
         } catch (SQLException e) {
@@ -66,29 +68,28 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
-
-    private Produto instantiateProduto(ResultSet rs) throws SQLException {
-        Produto obj = new Produto();
-        obj.setId(rs.getInt("id"));
-        obj.setDescricao(rs.getString("descricao"));
-        obj.setPreco(rs.getDouble("preco"));
-        obj.setQuantidade(rs.getInt("quantidade"));
+    private Vendas instantiateVenda(ResultSet rs) throws SQLException {
+        Vendas obj = new Vendas();
+        obj.setId(rs.getInt("ID"));
+        Timestamp timestamp = rs.getTimestamp("data");
+        obj.setData(timestamp != null ? timestamp.toInstant() : null);
+        obj.setId(rs.getInt("ID_CLIENTE"));
+        obj.setStatus(EnumStatus.valueOf(rs.getString("status")));
         return obj;
     }
 
     @Override
-    public List<Produto> findAll() {
+    public List<Vendas> findAll() {
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM produtos ORDER BY id");
+            st = conn.prepareStatement("SELECT * FROM vendas ORDER BY ID");
             rs = st.executeQuery();
 
-            List<Produto> list = new ArrayList<>();
+            List<Vendas> list = new ArrayList<>();
             while (rs.next()) {
-                Produto obj = instantiateProduto(rs);
+                Vendas obj = instantiateVenda(rs);
                 list.add(obj);
             }
             return list;

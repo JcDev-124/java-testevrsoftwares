@@ -4,17 +4,19 @@
  */
 package br.com.vrsoftware.dao;
 
-import br.com.software.model.Produto;
+import br.com.software.model.Vendas;
 import java.util.List;
 
 /**
  *
  * @author Julio
  */
-public interface ProdutoDao {
-    
-        void insert(Produto obj);
-	Produto findById(String nome);
-	List<Produto> findAll();
-        
+public interface VendasDao {
+
+    void insert(Vendas obj);
+
+    Vendas findById(Integer id);
+
+    List<Vendas> findAll();
+
 }

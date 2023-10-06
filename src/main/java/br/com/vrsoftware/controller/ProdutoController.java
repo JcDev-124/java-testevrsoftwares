@@ -20,16 +20,19 @@ public class ProdutoController {
     public ProdutoController(){}
     ProdutoDao produtoDao = DaoFactory.createProdutoDao();
     
- public void inserirProduto(Produto obj){
+ public boolean inserirProduto(Produto obj){
     
 
     Produto produtoExistente = produtoDao.findById(obj.getDescricao());
 
-    if (produtoExistente != null) {
+    if (produtoExistente != null && produtoExistente.getDescricao().equals(obj.getDescricao())) {
         JOptionPane.showMessageDialog(null, "ERRO, PRODUTO JA CADASTRADO", "Erro", JOptionPane.ERROR_MESSAGE);
-    } else {
-        produtoDao.insert(obj);
+        return false;
     }
+        produtoDao.insert(obj);
+        
+    return true;
+    
         
     }
  
@@ -37,6 +40,9 @@ public class ProdutoController {
     return produtoDao.findById(obj.getDescricao()).getId();
 }
 
+ public Integer pegarIdProduto(String descricao){
+    return produtoDao.findById(descricao).getId();
+}
 public List<Produto> retornaTodosProdutos(){
     return produtoDao.findAll();
 }
@@ -44,4 +50,9 @@ public List<Produto> retornaTodosProdutos(){
 public Double retornaPrecoProduto(String nome){
        return produtoDao.findById(nome).getPreco();
 }
+
+public Produto retornaProdutoPorNome(String nome){
+    return produtoDao.findById(nome);
+}
+
 }

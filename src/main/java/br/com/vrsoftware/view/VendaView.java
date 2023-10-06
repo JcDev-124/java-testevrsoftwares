@@ -4,11 +4,14 @@
  */
 package br.com.vrsoftware.view;
 
+import br.com.software.model.OrdemVenda;
+import br.com.software.model.Produto;
+import br.com.vrsoftware.controller.OrdemVendasController;
 import br.com.vrsoftware.controller.ProdutoController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -65,8 +68,8 @@ public class VendaView extends javax.swing.JFrame {
         btbRegistrar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
-        cmbCliente = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        txtCliente = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -188,8 +191,11 @@ public class VendaView extends javax.swing.JFrame {
         btnLimpar.setText("Limpar");
 
         btnFinalizar.setText("Finalizar");
-
-        cmbCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Cliente");
 
@@ -216,20 +222,17 @@ public class VendaView extends javax.swing.JFrame {
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(9, 9, 9)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(btnFinalizar)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(43, Short.MAX_VALUE))))
+                        .addComponent(txtCliente))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,8 +258,8 @@ public class VendaView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFinalizar)
-                    .addComponent(cmbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -266,7 +269,9 @@ public class VendaView extends javax.swing.JFrame {
     private void btbRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbRegistrarActionPerformed
         // TODO add your handling code here:
         ProdutoController controller = new ProdutoController();
+        OrdemVendasController controllerVendas = new OrdemVendasController();
         Integer quantidade;
+        List<OrdemVenda> listOrdemVenda = new ArrayList<>();
         String descricao = lblDescricao.getText();
 
         Double preco = controller.retornaPrecoProduto(descricao);
@@ -275,15 +280,26 @@ public class VendaView extends javax.swing.JFrame {
         quantidade = Integer.parseInt(lblQuantidade.getText());
         Double total = preco * quantidade;
         lblTotal.setText(total.toString());
-
+        
+        
         model = (DefaultTableModel) tblProdutos.getModel();
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        model.addRow(new Object[]{descricao, quantidade, preco});
         
+        OrdemVenda ordem = new OrdemVenda(controller.pegarIdProduto(descricao), quantidade, total);
+        controllerVendas.inserirOrdemVendas(ordem);
+        
+     
+       
+        
+        
+
+        model.addRow(new Object[]{descricao, quantidade, total});
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
         tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);
         tblProdutos.getColumnModel().getColumn(2).setPreferredWidth(70);
+        
+        
+       
         
         lblPreco.setText("");
         lblQuantidade.setText("");
@@ -292,6 +308,12 @@ public class VendaView extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btbRegistrarActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_btnFinalizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,7 +354,6 @@ public class VendaView extends javax.swing.JFrame {
     private javax.swing.JButton btbRegistrar;
     private javax.swing.JButton btnFinalizar;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JComboBox<String> cmbCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -348,5 +369,6 @@ public class VendaView extends javax.swing.JFrame {
     private javax.swing.JTextField lblSubTotal;
     private javax.swing.JTextField lblTotal;
     private javax.swing.JTable tblProdutos;
+    private javax.swing.JTextField txtCliente;
     // End of variables declaration//GEN-END:variables
 }

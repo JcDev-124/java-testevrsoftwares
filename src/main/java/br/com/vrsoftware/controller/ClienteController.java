@@ -21,18 +21,19 @@ public class ClienteController {
     public ClienteController() {
     }
     
-    
-public void inserirCliente(Cliente obj) {
+  
+public boolean inserirCliente(Cliente obj) {
 
     // Verifica se o cliente já está cadastrado
     Cliente clienteExistente = clienteDao.findById(obj.getNome());
 
-    if (clienteExistente != null) {
-        JOptionPane.showMessageDialog(null, "ERRO, CLIENTE JA CADASTRADO", "Erro", JOptionPane.ERROR_MESSAGE);
-    } else {
-        // O cliente não existe, então podemos inserir
-        clienteDao.insert(obj);
+    if (clienteExistente != null && clienteExistente.getNome().equals(obj.getNome())) {
+       JOptionPane.showMessageDialog(null, "ERRO, CLIENTE JA CADASTRADO", "Erro", JOptionPane.ERROR_MESSAGE);
+       return false;
     }
+    clienteDao.insert(obj);
+    return true;
+    
 }
 
 public Integer pegarIdCliente(Cliente obj){
