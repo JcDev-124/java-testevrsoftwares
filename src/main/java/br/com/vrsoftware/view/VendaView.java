@@ -4,8 +4,10 @@
  */
 package br.com.vrsoftware.view;
 
+import br.com.software.model.Cliente;
 import br.com.software.model.EnumStatus;
 import br.com.software.model.OrdemVenda;
+import br.com.software.model.Produto;
 import br.com.software.model.Vendas;
 import br.com.vrsoftware.controller.ClienteController;
 import br.com.vrsoftware.controller.OrdemVendasController;
@@ -20,7 +22,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -35,6 +39,7 @@ import javax.swing.table.DefaultTableModel;
 public class VendaView extends javax.swing.JFrame {
 
     private DefaultTableModel model;
+    ProdutoController controller = new ProdutoController();
 
     /**
      * Creates new form VendaView
@@ -63,6 +68,14 @@ public class VendaView extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         initComponents();
+        lblErroDescricao.setVisible(false);
+        lblErroQuantidade.setVisible(false);
+        
+        lblClienteErro.setVisible(false);
+        
+        addChangeListenerProduto(lblDescricao,  btbRegistrar,  lblErroDescricao,  lblPreco,  lblQuantidade, txtTotal);
+        addChangeListenerCliente(txtCliente,  btnFinalizar, lblClienteErro);
+
 
     }
 
@@ -97,6 +110,7 @@ public class VendaView extends javax.swing.JFrame {
         btnFechar = new javax.swing.JButton();
         lblErroQuantidade = new javax.swing.JLabel();
         lblErroDescricao = new javax.swing.JLabel();
+        lblClienteErro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -245,6 +259,9 @@ public class VendaView extends javax.swing.JFrame {
         lblErroDescricao.setForeground(new java.awt.Color(255, 0, 51));
         lblErroDescricao.setText("*produto nao cadastrado");
 
+        lblClienteErro.setForeground(new java.awt.Color(255, 51, 51));
+        lblClienteErro.setText("* cliente nao cadastrado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -283,7 +300,10 @@ public class VendaView extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtCliente))
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblClienteErro, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnFechar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(43, Short.MAX_VALUE))
@@ -304,27 +324,33 @@ public class VendaView extends javax.swing.JFrame {
                         .addGap(7, 7, 7)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblErroQuantidade)
-                        .addGap(2, 2, 2)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblErroQuantidade)
+                                .addGap(2, 2, 2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btbRegistrar)
+                                    .addComponent(btnLimpar)))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btbRegistrar)
-                            .addComponent(btnLimpar)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFinalizar)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnFinalizar)
+                            .addComponent(jLabel1)
+                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblClienteErro)
+                        .addGap(33, 33, 33))))
         );
 
         pack();
@@ -332,7 +358,6 @@ public class VendaView extends javax.swing.JFrame {
 
     private void btbRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbRegistrarActionPerformed
         // TODO add your handling code here:
-        ProdutoController controller = new ProdutoController();
         OrdemVendasController controllerVendas = new OrdemVendasController();
         Integer quantidade;
         List<OrdemVenda> listOrdemVenda = new ArrayList<>();
@@ -425,6 +450,90 @@ public class VendaView extends javax.swing.JFrame {
         });
     }
 
+    private static void addChangeListenerProduto(JTextField textField, JButton btnSalvar, JLabel lblErro, JTextField lblPreco,
+            JTextField lblQuantidade, JTextField txtTotal) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                ProdutoController controller = new ProdutoController();
+                Produto produto = new Produto();
+
+                String descricao = textField.getText();
+                produto = controller.retornaProdutoPorNome(descricao);
+                if (produto != null) {
+                    String preco = produto.getPreco().toString();
+                    lblPreco.setText(preco);
+                    lblQuantidade.setText("1");
+                    Double total = Double.parseDouble(lblQuantidade.getText()) * produto.getPreco();
+                    txtTotal.setText(total.toString());
+                    btnSalvar.setEnabled(true);
+                    lblErro.setVisible(false);
+                    
+
+                } else {
+                    btnSalvar.setEnabled(false);
+                    lblErro.setVisible(true);
+               ;
+                }
+
+            }
+
+        });
+    }
+
+    
+    
+       private static void addChangeListenerCliente(JTextField textField, JButton btnFinalizar, JLabel lblErro) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                ClienteController controller = new ClienteController();
+                Cliente cliente = new Cliente();
+                String nomeCliente = textField.getText();
+                cliente = controller.pegarCliente(nomeCliente);
+                if (cliente != null) {
+                    btnFinalizar.setEnabled(true);
+                    lblErro.setVisible(false);
+                    
+
+                } else {
+                    btnFinalizar.setEnabled(false);
+                    lblErro.setVisible(true);
+               ;
+                }
+
+            }
+
+        });
+    }
     /**
      * @param args the command line arguments
      */
@@ -474,6 +583,7 @@ public class VendaView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClienteErro;
     private javax.swing.JTextField lblDescricao;
     private javax.swing.JLabel lblErroDescricao;
     private javax.swing.JLabel lblErroQuantidade;

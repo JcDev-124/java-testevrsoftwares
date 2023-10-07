@@ -43,6 +43,9 @@ public Integer pegarIdCliente(Cliente obj){
 public Integer pegarIdCliente(String nome){
     return clienteDao.findById(nome).getId();
 }
+public Cliente pegarCliente(String nome){
+    return clienteDao.findById(nome);
+}
 
 public List<Cliente> retornaTodosClientes(){
     return clienteDao.findAll();
