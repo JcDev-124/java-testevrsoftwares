@@ -96,5 +96,17 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
         ordemDeVenda.setPreco(rs.getDouble("preco"));
         return ordemDeVenda;
     }
-
+      
+    @Override
+      public void deleteLinhasComIdVendaNulo() {
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement("DELETE FROM ordemdevenda WHERE id_venda IS NULL");
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException("Erro ao excluir linhas com id_venda nulo: " + e.getMessage());
+        } finally {
+            DB.CloseStatement(st);
+        }
+    }
 }

@@ -13,14 +13,19 @@ import br.com.vrsoftware.controller.ProdutoController;
 import br.com.vrsoftware.controller.VendasController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.Instant;
-import static java.time.Instant.now;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,6 +40,7 @@ public class VendaView extends javax.swing.JFrame {
      * Creates new form VendaView
      */
     public VendaView() {
+
         // Definir tamanho da tela
         int larguraTela = 500;
         int alturaTela = 400;
@@ -47,7 +53,17 @@ public class VendaView extends javax.swing.JFrame {
         int x = (dimensoesTela.width - larguraTela) / 2;
         int y = ((dimensoesTela.height - alturaTela) / 2);
         this.setLocation(x - 100, y - 100);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                executarAcao();
+            }
+        });
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
         initComponents();
+
     }
 
     /**
@@ -66,13 +82,13 @@ public class VendaView extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         lblQuantidade = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
-        lblTotal = new javax.swing.JTextField();
+        txtTotal = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProdutos = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
-        lblSubTotal = new javax.swing.JTextField();
+        txtSubTotal = new javax.swing.JTextField();
         btbRegistrar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
@@ -133,13 +149,13 @@ public class VendaView extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -180,13 +196,13 @@ public class VendaView extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblSubTotal, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(txtSubTotal, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblSubTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addComponent(txtSubTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -297,30 +313,36 @@ public class VendaView extends javax.swing.JFrame {
 
         Double preco = controller.retornaPrecoProduto(descricao);
         lblPreco.setText(preco.toString());
+        txtTotal.setText(String.valueOf(0));
 
         quantidade = Integer.parseInt(lblQuantidade.getText());
         Double total = preco * quantidade;
-        lblTotal.setText(total.toString());
+        txtTotal.setText(total.toString());
+        txtSubTotal.setText(String.valueOf(0));
+        addChangeListener(txtTotal, txtSubTotal, total);
 
         model = (DefaultTableModel) tblProdutos.getModel();
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
         model.addRow(new Object[]{descricao, quantidade, total});
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
         tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);
         tblProdutos.getColumnModel().getColumn(2).setPreferredWidth(70);
 
+// Supondo que txtSubTotal seja um componente de interface gráfica que aceita texto
         OrdemVenda ordem = new OrdemVenda(controller.pegarIdProduto(descricao), quantidade, total);
         controllerVendas.inserirOrdemVendas(ordem);
 
         lblPreco.setText("");
         lblQuantidade.setText("");
-        lblTotal.setText("");
+        txtTotal.setText("");
         lblDescricao.setText("");
-
 
     }//GEN-LAST:event_btbRegistrarActionPerformed
 
+    private void executarAcao() {
+        OrdemVendasController controllerVendas = new OrdemVendasController();
+        controllerVendas.deletaLinhas();
+    }
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         // TODO add your handling code here:
         ClienteController controller = new ClienteController();
@@ -343,11 +365,38 @@ public class VendaView extends javax.swing.JFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         // TODO add your handling code here:
+       executarAcao();
+
         this.dispose();
         SistemaView s = new SistemaView();
         s.setVisible(true);
         s.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnFecharActionPerformed
+
+    private static void addChangeListener(JTextField textField, JTextField textField2, Double valor) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                Double valorAtual = Double.valueOf(textField2.getText());
+                textField2.setText(String.valueOf(valorAtual + valor));
+            }
+
+        });
+    }
 
     /**
      * @param args the command line arguments
@@ -401,9 +450,9 @@ public class VendaView extends javax.swing.JFrame {
     private javax.swing.JTextField lblDescricao;
     private javax.swing.JTextField lblPreco;
     private javax.swing.JTextField lblQuantidade;
-    private javax.swing.JTextField lblSubTotal;
-    private javax.swing.JTextField lblTotal;
     private javax.swing.JTable tblProdutos;
     private javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtSubTotal;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

@@ -22,6 +22,9 @@ public class OrdemVendasController {
     public void inserirOrdemVendas(OrdemVenda obj) {
         ordem.insert(obj);
     }
-
+    
+    public void deletaLinhas(){
+        ordem.deleteLinhasComIdVendaNulo();
+    }
    
 }
