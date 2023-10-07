@@ -44,8 +44,16 @@ public class ProdutoView extends javax.swing.JFrame {
         initComponents();
         lblErro.setVisible(false);
         lblErroPreco.setVisible(false);
-        addChangeListener(txtQuantidade, btnSalvar, lblErro);
-        addChangeListenerPreco(txtPreco,btnSalvar,lblErroPreco);
+        btnSalvar.setEnabled(false);
+        
+        txtPreco.setText("0");
+        txtQuantidade.setText("0");
+        String regexQuantidade = "^\\d+$";
+        addChangeListener(txtQuantidade, btnSalvar, lblErro, regexQuantidade);
+
+        String regexPreco = "\\d+(\\.\\d+)?";
+        addChangeListener(txtPreco, btnSalvar, lblErroPreco, regexPreco);
+
         carregarDadosTabela();
     }
 
@@ -250,7 +258,7 @@ public class ProdutoView extends javax.swing.JFrame {
 
     }
 
-    private static void addChangeListener(JTextField textField, JButton btnSalvar, JLabel lblErro) {
+    private static void addChangeListener(JTextField textField, JButton btnSalvar, JLabel lblErro, String regexPattern) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -268,49 +276,18 @@ public class ProdutoView extends javax.swing.JFrame {
             }
 
             private void textChanged() {
-                String quantidade = textField.getText();
-                if (!quantidade.matches("^\\d+$")) {
+                String text = textField.getText();
+                if (text.isEmpty() || !text.matches(regexPattern)) {
                     btnSalvar.setEnabled(false);
                     lblErro.setVisible(true);
+                    
                 } else {
                     btnSalvar.setEnabled(true);
                     lblErro.setVisible(false);
+                    
+                    
                 }
-
             }
-
-        });
-    }
-
-    private static void addChangeListenerPreco(JTextField textField, JButton btnSalvar, JLabel lblErro) {
-        textField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                textChanged();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                textChanged();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                textChanged();
-            }
-
-            private void textChanged() {
-                String preco = textField.getText();
-                if(!preco.matches("\\d+(\\.\\d+)?")){
-                    btnSalvar.setEnabled(false);
-                    lblErro.setVisible(true);
-                }else {
-                    btnSalvar.setEnabled(true);
-                    lblErro.setVisible(false);
-                }
-
-            }
-
         });
     }
 
