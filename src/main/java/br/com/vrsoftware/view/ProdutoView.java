@@ -9,7 +9,12 @@ import br.com.vrsoftware.controller.ProdutoController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -37,6 +42,10 @@ public class ProdutoView extends javax.swing.JFrame {
         int y = (dimensoesTela.height - alturaTela) / 2;
         this.setLocation(x, y);
         initComponents();
+        lblErro.setVisible(false);
+        lblErroPreco.setVisible(false);
+        addChangeListener(txtQuantidade, btnSalvar, lblErro);
+        addChangeListenerPreco(txtPreco,btnSalvar,lblErroPreco);
         carregarDadosTabela();
     }
 
@@ -57,6 +66,8 @@ public class ProdutoView extends javax.swing.JFrame {
         lblPreco = new javax.swing.JLabel();
         txtQuantidade = new javax.swing.JTextField();
         txtPreco = new javax.swing.JTextField();
+        lblErro = new javax.swing.JLabel();
+        lblErroPreco = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduto = new javax.swing.JTable();
         btnFechar = new javax.swing.JButton();
@@ -78,6 +89,12 @@ public class ProdutoView extends javax.swing.JFrame {
 
         lblPreco.setText("Preço");
 
+        lblErro.setForeground(new java.awt.Color(255, 51, 51));
+        lblErro.setText("* campo inválido");
+
+        lblErroPreco.setForeground(new java.awt.Color(255, 51, 51));
+        lblErroPreco.setText("* campo inválido # . #");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,12 +102,18 @@ public class ProdutoView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnSalvar)
                         .addGap(73, 73, 73)
                         .addComponent(lblDescricao))
-                    .addComponent(lblQuantidade))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblErro, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblQuantidade))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblErroPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
@@ -109,11 +132,13 @@ public class ProdutoView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblQuantidade))
+                    .addComponent(lblQuantidade)
+                    .addComponent(lblErro))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPreco)
-                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblErroPreco))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -178,7 +203,9 @@ public class ProdutoView extends javax.swing.JFrame {
         txtQuantidade.setText("");
         txtPreco.setText("");
 
-        if (existe == true) model.addRow(new Object[]{controller.pegarIdProduto(produto), descricao, quantidade, preco});
+        if (existe == true) {
+            model.addRow(new Object[]{controller.pegarIdProduto(produto), descricao, quantidade, preco});
+        }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -188,7 +215,7 @@ public class ProdutoView extends javax.swing.JFrame {
         SistemaView s = new SistemaView();
         s.setVisible(true);
         s.setLocationRelativeTo(null);
-        
+
     }//GEN-LAST:event_btnFecharActionPerformed
 
     /**
@@ -221,6 +248,70 @@ public class ProdutoView extends javax.swing.JFrame {
             model.addRow(new Object[]{id_aux, descricao_aux, quantidade_aux, preco_aux});
         }
 
+    }
+
+    private static void addChangeListener(JTextField textField, JButton btnSalvar, JLabel lblErro) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                String quantidade = textField.getText();
+                if (!quantidade.matches("^\\d+$")) {
+                    btnSalvar.setEnabled(false);
+                    lblErro.setVisible(true);
+                } else {
+                    btnSalvar.setEnabled(true);
+                    lblErro.setVisible(false);
+                }
+
+            }
+
+        });
+    }
+
+    private static void addChangeListenerPreco(JTextField textField, JButton btnSalvar, JLabel lblErro) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                String preco = textField.getText();
+                if(!preco.matches("\\d+(\\.\\d+)?")){
+                    btnSalvar.setEnabled(false);
+                    lblErro.setVisible(true);
+                }else {
+                    btnSalvar.setEnabled(true);
+                    lblErro.setVisible(false);
+                }
+
+            }
+
+        });
     }
 
     public static void main(String args[]) {
@@ -261,6 +352,8 @@ public class ProdutoView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescricao;
+    private javax.swing.JLabel lblErro;
+    private javax.swing.JLabel lblErroPreco;
     private javax.swing.JLabel lblPreco;
     private javax.swing.JLabel lblQuantidade;
     private javax.swing.JTable tblProduto;
