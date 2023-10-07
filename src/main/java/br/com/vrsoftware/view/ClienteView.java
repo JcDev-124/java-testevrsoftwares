@@ -9,7 +9,12 @@ import br.com.vrsoftware.controller.ClienteController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -39,6 +44,8 @@ public class ClienteView extends javax.swing.JFrame {
         this.setLocation(x, y);
 
         initComponents();
+        lblErro.setVisible(false);
+        addChangeListener(txtNome, btnSalvar,lblErro);
 
         carregarDadosTabela();
     }
@@ -56,6 +63,7 @@ public class ClienteView extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
+        lblErro = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCliente = new javax.swing.JTable();
         btnFechar = new javax.swing.JButton();
@@ -73,6 +81,10 @@ public class ClienteView extends javax.swing.JFrame {
 
         lblNome.setText("Nome");
 
+        lblErro.setBackground(new java.awt.Color(255, 255, 255));
+        lblErro.setForeground(new java.awt.Color(255, 0, 51));
+        lblErro.setText("*O nome pode conter apenas letras.");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -83,7 +95,9 @@ public class ClienteView extends javax.swing.JFrame {
                 .addGap(88, 88, 88)
                 .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNome)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblErro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,7 +108,9 @@ public class ClienteView extends javax.swing.JFrame {
                     .addComponent(btnSalvar)
                     .addComponent(lblNome)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblErro)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tblCliente.setModel(new javax.swing.table.DefaultTableModel(
@@ -148,12 +164,13 @@ public class ClienteView extends javax.swing.JFrame {
         String nome = txtNome.getText();
         Cliente cliente = new Cliente(null, nome);
         ClienteController controller = new ClienteController();
-        
-        
+
         boolean existe = controller.inserirCliente(cliente);
         txtNome.setText("");
 
-       if(existe == true ) model.addRow(new Object[]{controller.pegarIdCliente(cliente), nome});
+        if (existe == true) {
+            model.addRow(new Object[]{controller.pegarIdCliente(cliente), nome});
+        }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -184,8 +201,42 @@ public class ClienteView extends javax.swing.JFrame {
 
             model.addRow(new Object[]{id_aux, nome_aux});
         }
-        
-        
+
+    }
+
+  
+
+    private static void addChangeListener(JTextField textField, JButton btnSalvar, JLabel lblErro) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                String cliente = textField.getText();
+                if (!cliente.matches("^[a-zA-Z ]+$")) {
+                    btnSalvar.setEnabled(false);
+                    lblErro.setVisible(true);
+                }else{ 
+                    btnSalvar.setEnabled(true);
+                    lblErro.setVisible(false);
+                }
+                
+
+            }
+
+        });
     }
 
     /**
@@ -229,6 +280,7 @@ public class ClienteView extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblErro;
     private javax.swing.JLabel lblNome;
     private javax.swing.JTable tblCliente;
     private javax.swing.JTextField txtNome;

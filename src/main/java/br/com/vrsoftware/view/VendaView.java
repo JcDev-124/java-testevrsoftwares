@@ -365,7 +365,7 @@ public class VendaView extends javax.swing.JFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         // TODO add your handling code here:
-       executarAcao();
+        executarAcao();
 
         this.dispose();
         SistemaView s = new SistemaView();
