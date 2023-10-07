@@ -346,7 +346,7 @@ public class VendaView extends javax.swing.JFrame {
         Double total = preco * quantidade;
         txtTotal.setText(total.toString());
         txtSubTotal.setText(String.valueOf(0));
-        addChangeListener(txtTotal, txtSubTotal, total);
+        addChangeListenerAtualizaValor(txtTotal, txtSubTotal, total);
 
         model = (DefaultTableModel) tblProdutos.getModel();
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -400,7 +400,7 @@ public class VendaView extends javax.swing.JFrame {
         s.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnFecharActionPerformed
 
-    private static void addChangeListener(JTextField textField, JTextField textField2, Double valor) {
+    private static void addChangeListenerAtualizaValor(JTextField textField, JTextField textField2, Double valor) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {

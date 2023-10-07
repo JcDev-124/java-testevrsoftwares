@@ -44,6 +44,7 @@ public class ClienteView extends javax.swing.JFrame {
         this.setLocation(x, y);
 
         initComponents();
+        btnSalvar.setEnabled(false);
         lblErro.setVisible(false);
         addChangeListener(txtNome, btnSalvar,lblErro);
 
@@ -225,7 +226,7 @@ public class ClienteView extends javax.swing.JFrame {
 
             private void textChanged() {
                 String cliente = textField.getText();
-                if (!cliente.matches("^[a-zA-Z ]+$")) {
+                if (!cliente.matches("^[a-zA-Z]+( +[a-zA-Z]+)*$")) {
                     btnSalvar.setEnabled(false);
                     lblErro.setVisible(true);
                 }else{ 
