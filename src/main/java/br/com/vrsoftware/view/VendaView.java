@@ -364,12 +364,12 @@ public class VendaView extends javax.swing.JFrame {
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         if (atualizaTabela(tblProdutos, lblDescricao.getText(), Integer.parseInt(lblQuantidade.getText())) == false) {
-            model.addRow(new Object[]{descricao, quantidade, total});
+            model.addRow(new Object[]{descricao, quantidade, preco});
         }
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
         tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);
         tblProdutos.getColumnModel().getColumn(2).setPreferredWidth(70);
-        
+
         limparCampos();
 
 
@@ -379,6 +379,8 @@ public class VendaView extends javax.swing.JFrame {
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         model = (DefaultTableModel) tblProdutos.getModel();
         percorrerJTable(tblProdutos);
+        atualizaEstoque(tblProdutos);
+
         ClienteController controller = new ClienteController();
         VendasController controllerVenda = new VendasController();
 
@@ -396,6 +398,8 @@ public class VendaView extends javax.swing.JFrame {
         controllerVenda.inserirVenda(venda);
         model.setRowCount(0);
         limparCampos();
+        limpaCamposFinalizar();
+
         JOptionPane.showMessageDialog(null, "Venda finalizada", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
@@ -571,6 +575,13 @@ public class VendaView extends javax.swing.JFrame {
         lblErroQuantidade.setVisible(false);
     }
 
+    private void limpaCamposFinalizar() {
+        txtCliente.setText("");
+        txtSubTotal.setText("");
+        lblClienteErro.setText("");
+
+    }
+
     public static boolean atualizaTabela(JTable table, String targetString, Integer incrementValue) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         int rowCount = model.getRowCount();
@@ -585,6 +596,23 @@ public class VendaView extends javax.swing.JFrame {
             }
         }
         return false;
+    }
+
+    public static void atualizaEstoque(JTable table) {
+
+        ProdutoController controller = new ProdutoController();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int rowCount = model.getRowCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            String nome = (String) model.getValueAt(i, 0);
+            Integer quantidade = (Integer) model.getValueAt(i, 1);
+            Double preco = (Double) model.getValueAt(i, 2);
+            Produto produto = new Produto(nome, preco, quantidade * -1);
+
+            controller.atualizaProduto(produto);
+
+        }
     }
 
     /**
