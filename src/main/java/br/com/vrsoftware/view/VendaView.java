@@ -351,7 +351,7 @@ public class VendaView extends javax.swing.JFrame {
         List<OrdemVenda> listOrdemVenda = new ArrayList<>();
         String descricao = txtDescricao.getText();
 
-        Double preco = controller.retornaPrecoProduto(descricao);
+        Double preco = controller.retornaPrecoProduto(descricao.toUpperCase());
         txtPrecoProduto.setText(preco.toString());
         txtTotal.setText(String.valueOf(0));
 

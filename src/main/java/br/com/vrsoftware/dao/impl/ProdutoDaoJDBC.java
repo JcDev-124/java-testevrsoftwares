@@ -27,7 +27,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st = conn.prepareStatement(
                     "INSERT INTO produtos (descricao, preco, quantidade) VALUES (?, ?, ?) RETURNING id"
             );
-            st.setString(1, obj.getDescricao());
+            st.setString(1, obj.getDescricao().toUpperCase());
             st.setDouble(2, obj.getPreco());
             st.setInt(3, obj.getQuantidade());
 
@@ -75,7 +75,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         try {
             st = conn.prepareStatement("SELECT * FROM produtos WHERE descricao = ?");
-            st.setString(1, descricao);
+            st.setString(1, descricao.toUpperCase());
             rs = st.executeQuery();
             if (rs.next()) {
                 return instantiateProduto(rs);
