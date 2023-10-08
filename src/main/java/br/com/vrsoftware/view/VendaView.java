@@ -30,7 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -391,7 +390,7 @@ public class VendaView extends javax.swing.JFrame {
     }
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         model = (DefaultTableModel) tblProdutos.getModel();
-
+        percorrerJTable(tblProdutos);
         ClienteController controller = new ClienteController();
         VendasController controllerVenda = new VendasController();
 
@@ -531,7 +530,22 @@ public class VendaView extends javax.swing.JFrame {
         });
     }
 
+    public static void percorrerJTable(JTable table) {
+        OrdemVendasController controller = new OrdemVendasController();
+        ProdutoController controllerProduto = new ProdutoController();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int rowCount = model.getRowCount();
 
+        for (int i = 0; i < rowCount; i++) {
+            // Obtém os valores das colunas 0, 1 e 2 para a linha atual
+            String col0Value = (String) model.getValueAt(i, 0);
+            Integer  col1Value = (Integer) model.getValueAt(i, 1);
+            Double col2Value = (Double) model.getValueAt(i, 2);
+            Integer id = controllerProduto.pegarIdProduto(col0Value);
+            OrdemVenda ordemVendas = new OrdemVenda(id, col1Value, col2Value);
+            controller.inserirOrdemVendas(ordemVendas);
+        }
+    }
 
     public static boolean atualizaTabela(JTable table, String targetString, Integer incrementValue) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
