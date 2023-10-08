@@ -4,14 +4,29 @@
  */
 package br.com.vrsoftware.view;
 
+import br.com.software.model.EnumStatus;
+import br.com.software.model.OrdemVenda;
+import br.com.software.model.Vendas;
+import br.com.vrsoftware.controller.ClienteController;
+import br.com.vrsoftware.controller.OrdemVendasController;
+import br.com.vrsoftware.controller.VendasController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Julio
  */
 public class PesquisaView extends javax.swing.JFrame {
+    
+        private DefaultTableModel model;
+        
+
 
     /**
      * Creates new form PesquisaView
@@ -30,6 +45,7 @@ public class PesquisaView extends javax.swing.JFrame {
         int y = (dimensoesTela.height - alturaTela) / 2;
         this.setLocation(x, y);
         initComponents();
+        carregarDadosTabela();
     }
 
     /**
@@ -65,16 +81,32 @@ public class PesquisaView extends javax.swing.JFrame {
 
         tblVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Id", "Data", "Cliente", "Valor total", "Status"
+                "Data", "Cliente", "Status", "Id"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblVendas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVendasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblVendas);
+        if (tblVendas.getColumnModel().getColumnCount() > 0) {
+            tblVendas.getColumnModel().getColumn(0).setResizable(false);
+            tblVendas.getColumnModel().getColumn(1).setResizable(false);
+            tblVendas.getColumnModel().getColumn(2).setResizable(false);
+            tblVendas.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnFechar.setText("X");
@@ -131,6 +163,51 @@ public class PesquisaView extends javax.swing.JFrame {
         v.setVisible(true);
         v.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void tblVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVendasMouseClicked
+        // TODO add your handling code here:
+        OrdemVendasController controller = new OrdemVendasController();
+        ListSelectionModel tableSelectionModel = tblVendas.getSelectionModel();
+        
+        tblVendas.setSelectionModel(tableSelectionModel);
+        
+        Integer id = Integer.parseInt(tblVendas.getValueAt(tblVendas.getSelectedRow(), 3).toString());
+        
+        List<OrdemVenda> list = controller.retornaVendasPorId(id);
+        
+        
+        
+    }//GEN-LAST:event_tblVendasMouseClicked
+
+    
+    
+ private void carregarDadosTabela() {
+    ClienteController controllerCliente = new ClienteController();
+    Integer id_aux;
+    Integer id;
+    Integer id_cliente;
+    String nome_aux;
+    LocalDate date_aux;
+    EnumStatus status;
+    VendasController controller = new VendasController();
+    List<Vendas> vendas = controller.retornaTodasVendas();
+
+    model = (DefaultTableModel) tblVendas.getModel();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    for (Vendas x : vendas) {
+        id = x.getId();
+        id_aux = x.getCliente();
+
+        nome_aux = controllerCliente.pegarNomeCliente(id_aux);
+        date_aux = x.getData();
+        String formattedDate = date_aux.format(formatter);  // Formatar a data
+
+        status =  x.pegarStatus();
+        model.addRow(new Object[]{formattedDate, nome_aux, status, id});
+    }
+}
 
     /**
      * @param args the command line arguments

@@ -17,8 +17,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.Instant;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +70,11 @@ public class VendaView extends javax.swing.JFrame {
         initComponents();
         lblErroDescricao.setVisible(false);
         lblErroQuantidade.setVisible(false);
-        
-        lblClienteErro.setVisible(false);
-        
-        addChangeListenerProduto(lblDescricao,  btbRegistrar,  lblErroDescricao,  lblPreco,  lblQuantidade, txtTotal);
-        addChangeListenerCliente(txtCliente,  btnFinalizar, lblClienteErro);
 
+        lblClienteErro.setVisible(false);
+
+        addChangeListenerProduto(lblDescricao, btbRegistrar, lblErroDescricao, lblPreco, lblQuantidade, txtTotal);
+        addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro);
 
     }
 
@@ -396,23 +395,20 @@ public class VendaView extends javax.swing.JFrame {
         controllerVendas.deletaLinhas();
     }
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        // TODO add your handling code here:
         ClienteController controller = new ClienteController();
         VendasController controllerVenda = new VendasController();
 
-        ZoneId zoneId = ZoneId.of("UTC");
-        Instant now = Instant.now();
-
-        // Converter a data para o formato ISO 8601
-        String formattedDate = now.atZone(zoneId).format(DateTimeFormatter.ISO_INSTANT);
+        // Obter a data no formato "dd/MM/yyyy"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
 
         String cliente = txtCliente.getText();
         Integer id = controller.pegarIdCliente(cliente);
         EnumStatus status = EnumStatus.FINALIZADO;
-        Vendas venda = new Vendas(Instant.parse(formattedDate), id, status);
+        Vendas venda = new Vendas(LocalDate.parse(formattedDate, formatter), id, status);
 
         controllerVenda.inserirVenda(venda);
-        JOptionPane.showMessageDialog(null, "Venda finalizada", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Venda finalizada em ", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -482,12 +478,11 @@ public class VendaView extends javax.swing.JFrame {
                     txtTotal.setText(total.toString());
                     btnSalvar.setEnabled(true);
                     lblErro.setVisible(false);
-                    
 
                 } else {
                     btnSalvar.setEnabled(false);
                     lblErro.setVisible(true);
-               ;
+                    ;
                 }
 
             }
@@ -495,9 +490,7 @@ public class VendaView extends javax.swing.JFrame {
         });
     }
 
-    
-    
-       private static void addChangeListenerCliente(JTextField textField, JButton btnFinalizar, JLabel lblErro) {
+    private static void addChangeListenerCliente(JTextField textField, JButton btnFinalizar, JLabel lblErro) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -522,18 +515,18 @@ public class VendaView extends javax.swing.JFrame {
                 if (cliente != null) {
                     btnFinalizar.setEnabled(true);
                     lblErro.setVisible(false);
-                    
 
                 } else {
                     btnFinalizar.setEnabled(false);
                     lblErro.setVisible(true);
-               ;
+                    ;
                 }
 
             }
 
         });
     }
+
     /**
      * @param args the command line arguments
      */

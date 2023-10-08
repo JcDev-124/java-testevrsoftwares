@@ -7,6 +7,7 @@ package br.com.vrsoftware.controller;
 import br.com.software.model.Vendas;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.VendasDao;
+import java.util.List;
 
 /**
  *
@@ -19,4 +20,12 @@ public class VendasController {
    public void inserirVenda(Vendas venda){
        vendasDao.insert(venda);
    }
-}
+   
+   public List retornaTodasVendas(){
+       
+       return vendasDao.findAll();
+   
+       }
+   
+   }
+

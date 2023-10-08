@@ -12,9 +12,13 @@ import java.util.List;
  * @author Julio
  */
 public interface ClienteDao {
-    
-	void insert(Cliente obj);
-	Cliente findById(String nome);
-	List<Cliente> findAll();
-    
+
+    void insert(Cliente obj);
+
+    Cliente findById(String nome);
+
+    Cliente findById(Integer id);
+
+    List<Cliente> findAll();
+
 }

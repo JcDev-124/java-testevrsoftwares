@@ -7,6 +7,7 @@ import br.com.vrsoftware.exceptions.db.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,8 +30,8 @@ public class VendasDaoJDBC implements VendasDao {
             st = conn.prepareStatement(
                     "INSERT INTO vendas (data, cliente_id, status) VALUES (?, ?, ?) RETURNING ID"
             );
-            
-            st.setDate(1, obj.getData() != null ? new java.sql.Date(obj.getData().toEpochMilli()) : null);
+
+            st.setDate(1, obj.getData() != null ? Date.valueOf(obj.getData()) : null);
             st.setInt(2, obj.getCliente());
             st.setString(3, obj.pegarStatus().name());
 
@@ -48,7 +49,6 @@ public class VendasDaoJDBC implements VendasDao {
         }
     }
 
- 
     @Override
     public Vendas findById(Integer id) {
         PreparedStatement st = null;
@@ -72,10 +72,10 @@ public class VendasDaoJDBC implements VendasDao {
 
     private Vendas instantiateVenda(ResultSet rs) throws SQLException {
         Vendas obj = new Vendas();
-        obj.setId(rs.getInt("ID"));
+        obj.setId(rs.getInt("id"));
+        obj.setCliente(rs.getInt("cliente_id"));  // Corrigido para setar o cliente_id
         Timestamp timestamp = rs.getTimestamp("data");
-        obj.setData(timestamp != null ? timestamp.toInstant() : null);
-        obj.setId(rs.getInt("ID_CLIENTE"));
+        obj.setData(timestamp != null ? timestamp.toLocalDateTime().toLocalDate() : null);
         obj.setStatus(EnumStatus.valueOf(rs.getString("status")));
         return obj;
     }
@@ -86,7 +86,7 @@ public class VendasDaoJDBC implements VendasDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM vendas ORDER BY ID");
+            st = conn.prepareStatement("SELECT * FROM vendas");
             rs = st.executeQuery();
 
             List<Vendas> list = new ArrayList<>();
@@ -102,8 +102,5 @@ public class VendasDaoJDBC implements VendasDao {
             DB.CloseResultSet(rs);
         }
     }
-    
-    
 
-    
 }

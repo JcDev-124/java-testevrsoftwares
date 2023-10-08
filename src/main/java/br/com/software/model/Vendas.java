@@ -5,7 +5,7 @@
 package br.com.software.model;
 
 import java.time.Instant;
-import java.util.Set;
+import java.time.LocalDate;
 
 /**
  *
@@ -14,14 +14,13 @@ import java.util.Set;
 public class Vendas {
 
     private Integer id;
-    private Instant data;
+    private LocalDate data;
     private Integer id_cliente;
     private Integer status;
 
     public Vendas(){}
     
-    public Vendas(Instant data, Integer id_cliente, EnumStatus status) {
-        this.id = id;
+    public Vendas(LocalDate data, Integer id_cliente, EnumStatus status) {
         this.data = data;
         this.id_cliente = id_cliente;
         setStatus(status);
@@ -35,11 +34,11 @@ public class Vendas {
         this.id = id;
     }
 
-    public Instant getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Instant data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 

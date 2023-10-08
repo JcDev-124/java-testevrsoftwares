@@ -5,10 +5,10 @@
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.OrdemVenda;
-import br.com.software.model.Produto;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.OrdemVendasDao;
 import br.com.vrsoftware.dao.ProdutoDao;
+import java.util.List;
 
 /**
  *
@@ -25,6 +25,10 @@ public class OrdemVendasController {
     
     public void deletaLinhas(){
         ordem.deleteLinhasComIdVendaNulo();
+    }
+    
+    public List retornaVendasPorId(Integer id){
+        return ordem.findAll(id);
     }
    
 }

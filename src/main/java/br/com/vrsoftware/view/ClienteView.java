@@ -121,8 +121,20 @@ public class ClienteView extends javax.swing.JFrame {
             new String [] {
                 "Id", "Nome"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblCliente);
+        if (tblCliente.getColumnModel().getColumnCount() > 0) {
+            tblCliente.getColumnModel().getColumn(0).setResizable(false);
+            tblCliente.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         btnFechar.setFont(new java.awt.Font("Segoe UI Variable", 1, 12)); // NOI18N
         btnFechar.setText("X");

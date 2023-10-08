@@ -7,7 +7,6 @@ package br.com.vrsoftware.controller;
 import br.com.software.model.Cliente;
 import br.com.vrsoftware.dao.ClienteDao;
 import br.com.vrsoftware.dao.DaoFactory;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -45,6 +44,13 @@ public Integer pegarIdCliente(String nome){
 }
 public Cliente pegarCliente(String nome){
     return clienteDao.findById(nome);
+}
+
+public String pegarNomeCliente(Integer id){
+    
+    String cliente = clienteDao.findById(id).getNome();
+    if(cliente!=null) return cliente;
+    else return "nao existe";
 }
 
 public List<Cliente> retornaTodosClientes(){

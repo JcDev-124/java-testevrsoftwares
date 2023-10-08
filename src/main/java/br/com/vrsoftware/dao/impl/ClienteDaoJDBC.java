@@ -63,6 +63,27 @@ public class ClienteDaoJDBC implements ClienteDao {
             DB.CloseResultSet(rs);
         }
     }
+    
+    @Override
+    public Cliente findById(Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT * FROM Clientes WHERE id = ?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                return instantiateCliente(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.CloseStatement(st);
+            DB.CloseResultSet(rs);
+        }
+    }
 
     private Cliente instantiateCliente(ResultSet rs) throws SQLException {
         Cliente obj = new Cliente();

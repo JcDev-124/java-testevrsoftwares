@@ -157,8 +157,22 @@ public class ProdutoView extends javax.swing.JFrame {
             new String [] {
                 "Id", "Descricao", "Quantidade", "Preço"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblProduto);
+        if (tblProduto.getColumnModel().getColumnCount() > 0) {
+            tblProduto.getColumnModel().getColumn(0).setResizable(false);
+            tblProduto.getColumnModel().getColumn(1).setResizable(false);
+            tblProduto.getColumnModel().getColumn(2).setResizable(false);
+            tblProduto.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         btnFechar.setFont(new java.awt.Font("Segoe UI Variable", 1, 12)); // NOI18N
         btnFechar.setText("X");
