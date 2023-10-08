@@ -88,6 +88,27 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             DB.CloseResultSet(rs);
         }
     }
+    
+        @Override
+    public Produto findById(Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT * FROM produtos WHERE id = ?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                return instantiateProduto(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.CloseStatement(st);
+            DB.CloseResultSet(rs);
+        }
+    }
 
     private Produto instantiateProduto(ResultSet rs) throws SQLException {
         Produto obj = new Produto();

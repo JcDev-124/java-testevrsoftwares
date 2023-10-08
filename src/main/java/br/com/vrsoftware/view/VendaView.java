@@ -364,7 +364,7 @@ public class VendaView extends javax.swing.JFrame {
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         if (atualizaTabela(tblProdutos, txtDescricao.getText(), Integer.parseInt(txtQuantidadeComprada.getText())) == false) {
-            model.addRow(new Object[]{descricao, quantidade, preco});
+            model.addRow(new Object[]{descricao.toUpperCase(), quantidade, preco});
         }
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
         tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);

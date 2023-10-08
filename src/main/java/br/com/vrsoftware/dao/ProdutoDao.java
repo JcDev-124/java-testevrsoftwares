@@ -16,6 +16,7 @@ public interface ProdutoDao {
         void insert(Produto obj);
         void update(Produto obj);
 	Produto findById(String nome);
+        Produto findById(Integer id);
 	List<Produto> findAll();
         
 }

@@ -180,6 +180,7 @@ public class ClienteView extends javax.swing.JFrame {
 
         boolean existe = controller.inserirCliente(cliente);
         txtNome.setText("");
+        lblErro.setText("");
 
         if (existe == true) {
             model.addRow(new Object[]{controller.pegarIdCliente(cliente), nome});

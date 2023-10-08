@@ -19,6 +19,4 @@ public interface OrdemVendasDao {
 
     List<OrdemVenda> findAll(Integer id_venda);
     
-    void deleteLinhasComIdVendaNulo();
-
 }

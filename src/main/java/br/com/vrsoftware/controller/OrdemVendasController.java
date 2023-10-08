@@ -23,9 +23,7 @@ public class OrdemVendasController {
         ordem.insert(obj);
     }
     
-    public void deletaLinhas(){
-        ordem.deleteLinhasComIdVendaNulo();
-    }
+
     
     public List retornaVendasPorId(Integer id){
         return ordem.findAll(id);

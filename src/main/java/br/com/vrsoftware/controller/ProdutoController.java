@@ -54,7 +54,10 @@ public class ProdutoController {
     public Produto retornaProdutoPorNome(String nome) {
         return produtoDao.findById(nome);
     }
-
+    
+      public Produto retornaProdutoPorId(Integer id) {
+        return produtoDao.findById(id);
+    }
     public void atualizaProduto(Produto obj) {
         Produto produto = new Produto();
         produto = produtoDao.findById(obj.getDescricao());
