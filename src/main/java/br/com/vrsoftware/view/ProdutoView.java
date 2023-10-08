@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -57,6 +56,10 @@ public class ProdutoView extends javax.swing.JFrame {
         addChangeListener(txtPreco, btnSalvar, btnEditar, lblErroPreco, regexPreco);
 
         carregarDadosTabela();
+
+        tblProduto.getColumnModel().getColumn(0).setMinWidth(0);
+        tblProduto.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblProduto.getColumnModel().getColumn(0).setWidth(0);
     }
 
     /**
@@ -263,7 +266,7 @@ public class ProdutoView extends javax.swing.JFrame {
         Integer quantidade = Integer.parseInt(txtQuantidade.getText());
         Double preco = Double.parseDouble(txtPreco.getText());
         Produto obj = new Produto(nome, preco, quantidade);
-        
+
         controller.atualizaProduto(obj);
         limpaCampos();
         model.setRowCount(0);
@@ -276,7 +279,7 @@ public class ProdutoView extends javax.swing.JFrame {
         txtPreco.setText("");
         lblErro.setVisible(false);
         lblErroPreco.setVisible(false);
-        
+
     }
 
     /**
@@ -292,11 +295,7 @@ public class ProdutoView extends javax.swing.JFrame {
         ProdutoController controller = new ProdutoController();
         List<Produto> produtos = controller.retornaTodosProdutos();
 
-        tblProduto.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tblProduto.getColumnModel().getColumn(0).setPreferredWidth(70);
-        tblProduto.getColumnModel().getColumn(1).setPreferredWidth(150);
-        tblProduto.getColumnModel().getColumn(2).setPreferredWidth(150);
-        tblProduto.getColumnModel().getColumn(3).setPreferredWidth(150);
+
 
         model = (DefaultTableModel) tblProduto.getModel();
 

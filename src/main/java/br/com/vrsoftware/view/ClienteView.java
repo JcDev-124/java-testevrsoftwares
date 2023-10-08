@@ -46,9 +46,12 @@ public class ClienteView extends javax.swing.JFrame {
         initComponents();
         btnSalvar.setEnabled(false);
         lblErro.setVisible(false);
-        addChangeListener(txtNome, btnSalvar,lblErro);
+        addChangeListener(txtNome, btnSalvar, lblErro);
 
         carregarDadosTabela();
+        tblCliente.getColumnModel().getColumn(0).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(0).setWidth(0);
     }
 
     /**
@@ -203,9 +206,7 @@ public class ClienteView extends javax.swing.JFrame {
         ClienteController controller = new ClienteController();
         List<Cliente> clientes = controller.retornaTodosClientes();
 
-        tblCliente.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tblCliente.getColumnModel().getColumn(0).setPreferredWidth(70);
-        tblCliente.getColumnModel().getColumn(1).setPreferredWidth(400);
+
 
         model = (DefaultTableModel) tblCliente.getModel();
 
@@ -217,8 +218,6 @@ public class ClienteView extends javax.swing.JFrame {
         }
 
     }
-
-  
 
     private static void addChangeListener(JTextField textField, JButton btnSalvar, JLabel lblErro) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
@@ -242,11 +241,10 @@ public class ClienteView extends javax.swing.JFrame {
                 if (!cliente.matches("^[a-zA-Z]+( +[a-zA-Z]+)*$")) {
                     btnSalvar.setEnabled(false);
                     lblErro.setVisible(true);
-                }else{ 
+                } else {
                     btnSalvar.setEnabled(true);
                     lblErro.setVisible(false);
                 }
-                
 
             }
 
