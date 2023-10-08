@@ -51,6 +51,31 @@ public class VendasDaoJDBC implements VendasDao {
     }
 
     @Override
+    public void findByVenda(Integer id) {
+        PreparedStatement updateStatement = null;
+        ResultSet rs = null;
+
+        try {
+            // Tenta atualizar o status para "DIGITANDO" diretamente para o ID
+            updateStatement = conn.prepareStatement("UPDATE vendas SET status = ? WHERE id = ?");
+            updateStatement.setString(1, "DIGITANDO");
+            updateStatement.setInt(2, id);
+
+            int rowsAffected = updateStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new DbException("Venda não encontrada para o ID: " + id);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.CloseStatement(updateStatement);
+            DB.CloseResultSet(rs);
+        }
+    }
+
+    @Override
     public Vendas findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;

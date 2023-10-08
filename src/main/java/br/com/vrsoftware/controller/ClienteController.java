@@ -1,60 +1,105 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.Cliente;
 import br.com.vrsoftware.dao.ClienteDao;
 import br.com.vrsoftware.dao.DaoFactory;
+
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Julio
- */
 public class ClienteController {
-    ClienteDao clienteDao = DaoFactory.createClienteDao();
+
+    private ClienteDao clienteDao;
 
     public ClienteController() {
+        clienteDao = DaoFactory.createClienteDao();
     }
-    
-  
-public boolean inserirCliente(Cliente obj) {
 
-    // Verifica se o cliente já está cadastrado
-    Cliente clienteExistente = clienteDao.findById(obj.getNome());
+    public boolean inserirCliente(Cliente obj) {
+        try {
+            // Verifica se o cliente já está cadastrado
+            Cliente clienteExistente = clienteDao.findById(obj.getNome());
 
-    if (clienteExistente != null && clienteExistente.getNome().equals(obj.getNome())) {
-       JOptionPane.showMessageDialog(null, "ERRO, CLIENTE JA CADASTRADO", "Erro", JOptionPane.ERROR_MESSAGE);
-       return false;
+            if (clienteExistente != null && clienteExistente.getNome().equalsIgnoreCase(obj.getNome())) {
+                JOptionPane.showMessageDialog(null, "Cliente já cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
+                throw new IllegalArgumentException("Cliente já cadastrado.");
+            }
+
+            clienteDao.insert(obj);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao inserir cliente: " + e.getMessage());
+        }
     }
-    clienteDao.insert(obj);
-    return true;
-    
-}
 
-public Integer pegarIdCliente(Cliente obj){
-    return clienteDao.findById(obj.getNome()).getId();
-}
+    public Integer pegarIdCliente(Cliente obj) {
+        try {
+            Cliente cliente = clienteDao.findById(obj.getNome());
+            if (cliente != null) {
+                return cliente.getId();
+            } else {
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao obter ID do cliente: " + e.getMessage());
+        }
+    }
 
-public Integer pegarIdCliente(String nome){
-    return clienteDao.findById(nome).getId();
-}
-public Cliente pegarCliente(String nome){
-    return clienteDao.findById(nome);
-}
+    public Integer pegarIdCliente(String nome) {
+        try {
+            Cliente cliente = clienteDao.findById(nome);
+            if (cliente != null) {
+                return cliente.getId();
+            } else {
+                JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
-public String pegarNomeCliente(Integer id){
-    
-    String cliente = clienteDao.findById(id).getNome();
-    if(cliente!=null) return cliente;
-    else return "nao existe";
-}
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao obter ID do cliente: " + e.getMessage());
+        }
+    }
 
-public List<Cliente> retornaTodosClientes(){
-    return clienteDao.findAll();
-}
+    public Cliente pegarCliente(String nome) {
+        try {
+            Cliente cliente = clienteDao.findById(nome);
+            if (cliente != null) {
+                return cliente;
+            } else {
+                JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao obter cliente: " + e.getMessage());
+        }
+    }
+
+    public String pegarNomeCliente(Integer id) {
+        try {
+            Cliente cliente = clienteDao.findById(id);
+            if (cliente != null) {
+                return cliente.getNome();
+            } else {
+                JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
+
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao obter nome do cliente: " + e.getMessage());
+        }
+    }
+
+    public List<Cliente> retornaTodosClientes() {
+        try {
+            List<Cliente> clientes = clienteDao.findAll();
+            if (clientes != null) {
+                return clientes;
+            } else {
+                throw new RuntimeException("Não foi possível obter a lista de clientes.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao obter a lista de clientes: " + e.getMessage());
+        }
+    }
 }

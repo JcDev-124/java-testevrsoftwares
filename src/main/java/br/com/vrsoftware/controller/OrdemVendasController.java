@@ -1,32 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.OrdemVenda;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.OrdemVendasDao;
-import br.com.vrsoftware.dao.ProdutoDao;
+
 import java.util.List;
 
-/**
- *
- * @author Julio
- */
 public class OrdemVendasController {
 
-    OrdemVendasDao ordem = DaoFactory.createOrdemVendaDao();
-    ProdutoDao produtoDao = DaoFactory.createProdutoDao();
+    private OrdemVendasDao ordem;
+
+    public OrdemVendasController() {
+        ordem = DaoFactory.createOrdemVendaDao();
+    }
 
     public void inserirOrdemVendas(OrdemVenda obj) {
-        ordem.insert(obj);
+        try {
+            ordem.insert(obj);
+        } catch (Exception e) {
+            // Trate a exceção conforme necessário (ex: log, mensagem de erro, etc.)
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao inserir ordem de vendas: " + e.getMessage());
+        }
     }
-    
 
-    
-    public List retornaVendasPorId(Integer id){
-        return ordem.findAll(id);
+    public List<OrdemVenda> retornaVendasPorId(Integer id) {
+        try {
+            List<OrdemVenda> vendas = ordem.findAll(id);
+            if (vendas != null) {
+                return vendas;
+            } else {
+                throw new RuntimeException("Não foi possível obter a lista de vendas para o ID: " + id);
+            }
+        } catch (Exception e) {
+            // Trate a exceção conforme necessário (ex: log, mensagem de erro, etc.)
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao obter vendas por ID: " + e.getMessage());
+        }
     }
-   
 }

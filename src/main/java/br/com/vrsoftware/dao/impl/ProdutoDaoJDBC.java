@@ -55,7 +55,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             );
             st.setInt(1, obj.getQuantidade());
             st.setDouble(2, obj.getPreco());
-            st.setString(3, obj.getDescricao());
+            st.setString(3, obj.getDescricao().toUpperCase());
 
             int rowsAffected = st.executeUpdate();
             if (rowsAffected == 0) {

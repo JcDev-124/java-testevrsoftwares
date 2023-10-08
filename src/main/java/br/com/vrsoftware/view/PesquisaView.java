@@ -12,13 +12,11 @@ import br.com.vrsoftware.controller.ClienteController;
 import br.com.vrsoftware.controller.OrdemVendasController;
 import br.com.vrsoftware.controller.ProdutoController;
 import br.com.vrsoftware.controller.VendasController;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -38,23 +36,12 @@ public class PesquisaView extends javax.swing.JFrame {
      * Creates new form PesquisaView
      */
     public PesquisaView() {
-        // Definir tamanho da tela
-        int larguraTela = 500;
-        int alturaTela = 400;
-        this.setSize(larguraTela, alturaTela);
-
-        // Obter as dimensões da tela
-        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Calcular a localização para centralizar na tela
-        int x = (dimensoesTela.width - larguraTela) / 2;
-        int y = (dimensoesTela.height - alturaTela) / 2;
-        this.setLocation(x, y);
 
         initComponents();
         formatarCampoData();
         carregarDadosTabela();
 
+        //Ocultando a coluna ID
         tblVendas.getColumnModel().getColumn(4).setMinWidth(0);
         tblVendas.getColumnModel().getColumn(4).setMaxWidth(0);
         tblVendas.getColumnModel().getColumn(4).setWidth(0);
@@ -348,7 +335,28 @@ public class PesquisaView extends javax.swing.JFrame {
 
     private void btnEstornarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstornarVendaActionPerformed
         // TODO add your handling code here:
+        OrdemVendasController controller = new OrdemVendasController();
+        VendasController controllerVenda = new VendasController();
+        ProdutoController controllerProduto = new ProdutoController();
 
+        ListSelectionModel tableSelectionModel = tblVendas.getSelectionModel();
+        tblVendas.setSelectionModel(tableSelectionModel);
+        Integer id = (Integer) tblVendas.getValueAt(tblVendas.getSelectedRow(), 4);
+
+        controllerVenda.atualizaStatusVenda(id);
+        List<OrdemVenda> list = controller.retornaVendasPorId(id);
+
+        for (OrdemVenda x : list) {
+            String descricao = controllerProduto.retornaProdutoPorId(x.getIdProduto()).getDescricao();
+            Integer quantidade = x.getQuantidade();
+            Double preco = x.getPreco();
+            Produto produto = new Produto(descricao,preco,quantidade);
+            controllerProduto.atualizaProduto(produto);
+        }
+        JOptionPane.showMessageDialog(null, "Venda estornada!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
+        
+        
 
     }//GEN-LAST:event_btnEstornarVendaActionPerformed
 

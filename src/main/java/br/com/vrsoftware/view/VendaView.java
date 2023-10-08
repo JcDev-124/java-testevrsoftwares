@@ -45,29 +45,17 @@ public class VendaView extends javax.swing.JFrame {
      */
     public VendaView() {
 
-        // Definir tamanho da tela
-        int larguraTela = 500;
-        int alturaTela = 400;
-        this.setSize(larguraTela, alturaTela);
-
-        // Obter as dimensões da tela
-        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Calcular a localização para centralizar na tela
-        int x = (dimensoesTela.width - larguraTela) / 2;
-        int y = ((dimensoesTela.height - alturaTela) / 2);
-        this.setLocation(x - 100, y - 100);
-
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         initComponents();
+
+        //setando algumas coisas iniciais
         lblErroDescricao.setVisible(false);
         lblErroQuantidade.setVisible(false);
 
         lblClienteErro.setVisible(false);
 
         addChangeListenerProduto(txtDescricao, btbRegistrar, lblErroDescricao, txtPrecoProduto, txtQuantidadeComprada, txtTotal);
-        addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro,tblProdutos);
         addChangeListenerQuantidade(txtQuantidadeComprada, btbRegistrar, lblErroQuantidade);
         btnFinalizar.setEnabled(false);
         monitorarAlteracoesNaTabela(tblProdutos, btnFinalizar);
@@ -106,6 +94,7 @@ public class VendaView extends javax.swing.JFrame {
         lblErroQuantidade = new javax.swing.JLabel();
         lblErroDescricao = new javax.swing.JLabel();
         lblClienteErro = new javax.swing.JLabel();
+        btnRegistraCliente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -194,7 +183,7 @@ public class VendaView extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -232,7 +221,7 @@ public class VendaView extends javax.swing.JFrame {
 
         btnLimpar.setText("Limpar");
 
-        btnFinalizar.setText("Finalizar");
+        btnFinalizar.setText("Finalizar venda");
         btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFinalizarActionPerformed(evt);
@@ -240,6 +229,12 @@ public class VendaView extends javax.swing.JFrame {
         });
 
         jLabel1.setText("Cliente");
+
+        txtCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClienteActionPerformed(evt);
+            }
+        });
 
         btnFechar.setText("X");
         btnFechar.addActionListener(new java.awt.event.ActionListener() {
@@ -256,6 +251,13 @@ public class VendaView extends javax.swing.JFrame {
 
         lblClienteErro.setForeground(new java.awt.Color(255, 51, 51));
         lblClienteErro.setText("* cliente nao cadastrado");
+
+        btnRegistraCliente.setText("Registrar Cliente");
+        btnRegistraCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistraClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -288,18 +290,21 @@ public class VendaView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(29, 29, 29)
-                            .addComponent(btnFinalizar)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtCliente))
-                        .addComponent(lblClienteErro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblClienteErro, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnFinalizar)
+                                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGap(18, 18, 18)
+                            .addComponent(btnRegistraCliente)))
                     .addComponent(btnFechar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,14 +337,20 @@ public class VendaView extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblClienteErro)
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFinalizar)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 37, Short.MAX_VALUE)
+                        .addComponent(btnFinalizar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(btnRegistraCliente))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -349,29 +360,25 @@ public class VendaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         OrdemVendasController controllerVendas = new OrdemVendasController();
         Integer quantidade;
-        List<OrdemVenda> listOrdemVenda = new ArrayList<>();
-        String descricao = txtDescricao.getText();
 
+        String descricao = txtDescricao.getText();
         Double preco = controller.retornaPrecoProduto(descricao.toUpperCase());
         txtPrecoProduto.setText(preco.toString());
         txtTotal.setText(String.valueOf(0));
-
         quantidade = Integer.parseInt(txtQuantidadeComprada.getText());
         Double total = preco * quantidade;
         txtTotal.setText(total.toString());
         txtSubTotal.setText(String.valueOf(0));
-        addChangeListenerAtualizaValor(txtTotal, txtSubTotal, total);
-        model = (DefaultTableModel) tblProdutos.getModel();
-        tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        if (atualizaTabela(tblProdutos, txtDescricao.getText(), Integer.parseInt(txtQuantidadeComprada.getText())) == false) {
+        addChangeListenerAtualizaValor(txtTotal, txtSubTotal, total);
+
+        model = (DefaultTableModel) tblProdutos.getModel();
+
+        if (atualizaTabela(tblProdutos, txtDescricao.getText().toUpperCase(), Integer.parseInt(txtQuantidadeComprada.getText())) == false) {
             model.addRow(new Object[]{descricao.toUpperCase(), quantidade, preco});
         }
-        tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
-        tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);
-        tblProdutos.getColumnModel().getColumn(2).setPreferredWidth(70);
-
         limparCampos();
+        btnFinalizar.setEnabled(false);
 
 
     }//GEN-LAST:event_btbRegistrarActionPerformed
@@ -394,9 +401,10 @@ public class VendaView extends javax.swing.JFrame {
         EnumStatus status = EnumStatus.FINALIZADO;
         String valor = txtSubTotal.getText();
         Double valorTotal = Double.parseDouble(valor);
-        Vendas venda = new Vendas(LocalDate.parse(formattedDate, formatter), id, status, valorTotal);
 
+        Vendas venda = new Vendas(LocalDate.parse(formattedDate, formatter), id, status, valorTotal);
         controllerVenda.inserirVenda(venda);
+
         model.setRowCount(0);
         limparCampos();
         limpaCamposFinalizar();
@@ -413,6 +421,29 @@ public class VendaView extends javax.swing.JFrame {
         s.setVisible(true);
         s.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void txtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClienteActionPerformed
+
+    private void btnRegistraClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistraClienteActionPerformed
+        // TODO add your handling code here:
+        ClienteController controller = new ClienteController();
+        btnFinalizar.setEnabled(false);
+        String nome = txtCliente.getText();
+        Integer id = controller.pegarIdCliente(nome);
+        int rowCount = tblProdutos.getRowCount();
+        
+        if(id == null || rowCount == 0){
+            btnFinalizar.setEnabled(false);
+            lblClienteErro.setVisible(true);
+        }else{
+            lblClienteErro.setVisible(false);
+            btnFinalizar.setEnabled(true);
+        }
+
+
+    }//GEN-LAST:event_btnRegistraClienteActionPerformed
 
     private static void addChangeListenerAtualizaValor(JTextField textField, JTextField textField2, Double valor) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
@@ -476,48 +507,6 @@ public class VendaView extends javax.swing.JFrame {
                     btnSalvar.setEnabled(false);
                     lblErro.setVisible(true);
 
-                }
-
-            }
-
-        });
-    }
-
-    private static void addChangeListenerCliente(JTextField textField, JButton btnFinalizar, JLabel lblErro, JTable tblProdutos) {
-        textField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                textChanged();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                textChanged();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                textChanged();
-            }
-
-            private void textChanged() {
-                ClienteController controller = new ClienteController();
-                Cliente cliente = new Cliente();
-                String nomeCliente = textField.getText();
-                cliente = controller.pegarCliente(nomeCliente);
-                if (cliente != null) {
-                    btnFinalizar.setEnabled(true);
-                    lblErro.setVisible(false);
-                    int rowCount = tblProdutos.getRowCount();
-
-                    if (rowCount == 0) {
-                        btnFinalizar.setEnabled(false);
-                    }else btnFinalizar.setEnabled(true);
-
-                } else {
-                    btnFinalizar.setEnabled(false);
-                    lblErro.setVisible(true);
-                    ;
                 }
 
             }
@@ -676,6 +665,7 @@ public class VendaView extends javax.swing.JFrame {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnFinalizar;
     private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnRegistraCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

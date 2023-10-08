@@ -29,19 +29,10 @@ public class ProdutoView extends javax.swing.JFrame {
      * Creates new form ProdutoView
      */
     public ProdutoView() {
-        // Definir tamanho da tela
-        int larguraTela = 500;
-        int alturaTela = 400;
-        this.setSize(larguraTela, alturaTela);
 
-        // Obter as dimensões da tela
-        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Calcular a localização para centralizar na tela
-        int x = (dimensoesTela.width - larguraTela) / 2;
-        int y = (dimensoesTela.height - alturaTela) / 2;
-        this.setLocation(x, y);
         initComponents();
+
+        //Setando alguns componentes iniciais 
         lblErro.setVisible(false);
         lblErroPreco.setVisible(false);
         btnSalvar.setEnabled(false);
@@ -49,6 +40,7 @@ public class ProdutoView extends javax.swing.JFrame {
 
         txtPreco.setText("0");
         txtQuantidade.setText("0");
+
         String regexQuantidade = "^\\d+$";
         addChangeListener(txtQuantidade, btnSalvar, btnEditar, lblErro, regexQuantidade);
 
@@ -57,6 +49,7 @@ public class ProdutoView extends javax.swing.JFrame {
 
         carregarDadosTabela();
 
+        //Ocultando id
         tblProduto.getColumnModel().getColumn(0).setMinWidth(0);
         tblProduto.getColumnModel().getColumn(0).setMaxWidth(0);
         tblProduto.getColumnModel().getColumn(0).setWidth(0);
@@ -247,6 +240,10 @@ public class ProdutoView extends javax.swing.JFrame {
             model.addRow(new Object[]{controller.pegarIdProduto(produto), descricao.toUpperCase(), quantidade, preco});
         }
 
+        txtPreco.setText("0");
+        txtQuantidade.setText("0");
+        btnSalvar.setEnabled(false);
+        btnEditar.setEnabled(false);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -271,6 +268,11 @@ public class ProdutoView extends javax.swing.JFrame {
         limpaCampos();
         model.setRowCount(0);
         carregarDadosTabela();
+        txtPreco.setText("0");
+        txtQuantidade.setText("0");
+        btnEditar.setEnabled(false);
+        btnSalvar.setEnabled(false);
+
 
     }//GEN-LAST:event_btnEditarActionPerformed
     private void limpaCampos() {
@@ -294,8 +296,6 @@ public class ProdutoView extends javax.swing.JFrame {
 
         ProdutoController controller = new ProdutoController();
         List<Produto> produtos = controller.retornaTodosProdutos();
-
-
 
         model = (DefaultTableModel) tblProduto.getModel();
 

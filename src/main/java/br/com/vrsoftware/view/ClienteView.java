@@ -30,25 +30,16 @@ public class ClienteView extends javax.swing.JFrame {
      */
     public ClienteView() {
 
-        // Definir tamanho da tela
-        int larguraTela = 500;
-        int alturaTela = 400;
-        this.setSize(larguraTela, alturaTela);
-
-        // Obter as dimensões da tela
-        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Calcular a localização para centralizar na tela
-        int x = (dimensoesTela.width - larguraTela) / 2;
-        int y = (dimensoesTela.height - alturaTela) / 2;
-        this.setLocation(x, y);
 
         initComponents();
+        //setando alguns botões iniciais
         btnSalvar.setEnabled(false);
         lblErro.setVisible(false);
         addChangeListener(txtNome, btnSalvar, lblErro);
 
         carregarDadosTabela();
+        
+        //ocultando a coluna id
         tblCliente.getColumnModel().getColumn(0).setMinWidth(0);
         tblCliente.getColumnModel().getColumn(0).setMaxWidth(0);
         tblCliente.getColumnModel().getColumn(0).setWidth(0);

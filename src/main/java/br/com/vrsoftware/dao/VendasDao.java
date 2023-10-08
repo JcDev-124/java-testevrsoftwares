@@ -16,7 +16,9 @@ public interface VendasDao {
     void insert(Vendas obj);
 
     Vendas findById(Integer id);
-
+    
+    void findByVenda(Integer id);
+    
     List<Vendas> findAll();
 
 }

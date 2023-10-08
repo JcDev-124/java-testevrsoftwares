@@ -51,7 +51,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 
         try {
             st = conn.prepareStatement("SELECT * FROM Clientes WHERE nome = ?");
-            st.setString(1, nome.toUpperCase(Locale.ITALY));
+            st.setString(1, nome.toUpperCase());
             rs = st.executeQuery();
             if (rs.next()) {
                 return instantiateCliente(rs);
