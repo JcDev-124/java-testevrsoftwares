@@ -21,7 +21,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
- public void insert(Produto obj) {
+    public void insert(Produto obj) {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
@@ -40,6 +40,29 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.CloseStatement(st);
+        }
+    }
+
+    public void update(Produto obj) {
+        PreparedStatement st = null;
+
+        try {
+            // Atualiza a quantidade do produto somando o valor acrescentado
+            st = conn.prepareStatement(
+                    "UPDATE produtos SET quantidade = quantidade + ?, preco = ? WHERE descricao = ?"
+            );
+            st.setInt(1, obj.getQuantidade());
+            st.setDouble(2, obj.getPreco());
+            st.setString(3, obj.getDescricao());
+
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DbException("Produto não encontrado: " + obj.getDescricao());
+            }
+        } catch (SQLException e) {
+            throw new DbException("Erro ao atualizar a quantidade do produto: " + e.getMessage());
         } finally {
             DB.CloseStatement(st);
         }
@@ -65,8 +88,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             DB.CloseResultSet(rs);
         }
     }
-
-
 
     private Produto instantiateProduto(ResultSet rs) throws SQLException {
         Produto obj = new Produto();
@@ -99,6 +120,5 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             DB.CloseResultSet(rs);
         }
     }
-
 
 }

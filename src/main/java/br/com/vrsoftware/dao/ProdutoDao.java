@@ -14,6 +14,7 @@ import java.util.List;
 public interface ProdutoDao {
     
         void insert(Produto obj);
+        void update(Produto obj);
 	Produto findById(String nome);
 	List<Produto> findAll();
         

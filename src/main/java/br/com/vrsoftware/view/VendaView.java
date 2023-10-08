@@ -57,12 +57,6 @@ public class VendaView extends javax.swing.JFrame {
         int x = (dimensoesTela.width - larguraTela) / 2;
         int y = ((dimensoesTela.height - alturaTela) / 2);
         this.setLocation(x - 100, y - 100);
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                executarAcao();
-            }
-        });
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -74,6 +68,7 @@ public class VendaView extends javax.swing.JFrame {
 
         addChangeListenerProduto(lblDescricao, btbRegistrar, lblErroDescricao, lblPreco, lblQuantidade, txtTotal);
         addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro);
+        addChangeListenerQuantidade(lblQuantidade, btbRegistrar, lblErroQuantidade);
         btnFinalizar.setEnabled(false);
 
     }
@@ -287,7 +282,7 @@ public class VendaView extends javax.swing.JFrame {
                                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblErroQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(lblErroQuantidade))))
                         .addGap(9, 9, 9)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,8 +318,8 @@ public class VendaView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblErroQuantidade)
-                        .addGap(2, 2, 2)
+                        .addComponent(lblErroQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -374,20 +369,13 @@ public class VendaView extends javax.swing.JFrame {
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
         tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);
         tblProdutos.getColumnModel().getColumn(2).setPreferredWidth(70);
-
-        lblPreco.setText("");
-        lblQuantidade.setText("");
-        txtTotal.setText("");
-        lblDescricao.setText("");
-        lblErroDescricao.setVisible(false);
+        
+        limparCampos();
 
 
     }//GEN-LAST:event_btbRegistrarActionPerformed
 
-    private void executarAcao() {
-        OrdemVendasController controllerVendas = new OrdemVendasController();
-        controllerVendas.deletaLinhas();
-    }
+
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         model = (DefaultTableModel) tblProdutos.getModel();
         percorrerJTable(tblProdutos);
@@ -407,16 +395,12 @@ public class VendaView extends javax.swing.JFrame {
 
         controllerVenda.inserirVenda(venda);
         model.setRowCount(0);
-        txtSubTotal.setText("");
-        txtCliente.setText("");
-        lblErroDescricao.setVisible(false);
-        lblClienteErro.setVisible(false);
+        limparCampos();
         JOptionPane.showMessageDialog(null, "Venda finalizada", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         // TODO add your handling code here:
-        executarAcao();
 
         this.dispose();
         SistemaView s = new SistemaView();
@@ -530,6 +514,37 @@ public class VendaView extends javax.swing.JFrame {
         });
     }
 
+    private static void addChangeListenerQuantidade(JTextField textField, JButton btnSalvar, JLabel lblErroQuantidade) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            private void textChanged() {
+                String text = textField.getText();
+
+                if (text.matches("\\d+") && Integer.parseInt(text) >= 0) {
+                    btnSalvar.setEnabled(true);
+                    lblErroQuantidade.setVisible(false);
+                } else {
+                    btnSalvar.setEnabled(false);
+                    lblErroQuantidade.setVisible(true);
+                }
+            }
+        });
+    }
+
     public static void percorrerJTable(JTable table) {
         OrdemVendasController controller = new OrdemVendasController();
         ProdutoController controllerProduto = new ProdutoController();
@@ -539,12 +554,21 @@ public class VendaView extends javax.swing.JFrame {
         for (int i = 0; i < rowCount; i++) {
             // Obtém os valores das colunas 0, 1 e 2 para a linha atual
             String col0Value = (String) model.getValueAt(i, 0);
-            Integer  col1Value = (Integer) model.getValueAt(i, 1);
+            Integer col1Value = (Integer) model.getValueAt(i, 1);
             Double col2Value = (Double) model.getValueAt(i, 2);
             Integer id = controllerProduto.pegarIdProduto(col0Value);
             OrdemVenda ordemVendas = new OrdemVenda(id, col1Value, col2Value);
             controller.inserirOrdemVendas(ordemVendas);
         }
+    }
+
+    private void limparCampos() {
+        lblPreco.setText("");
+        lblQuantidade.setText("");
+        txtTotal.setText("");
+        lblDescricao.setText("");
+        lblErroDescricao.setVisible(false);
+        lblErroQuantidade.setVisible(false);
     }
 
     public static boolean atualizaTabela(JTable table, String targetString, Integer incrementValue) {

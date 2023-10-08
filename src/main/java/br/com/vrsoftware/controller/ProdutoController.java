@@ -55,4 +55,7 @@ public Produto retornaProdutoPorNome(String nome){
     return produtoDao.findById(nome);
 }
 
+public void atualizaProduto(Produto obj){
+    produtoDao.update(obj);
+}
 }
