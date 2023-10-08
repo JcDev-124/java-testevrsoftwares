@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ClienteDaoJDBC implements ClienteDao {
 
@@ -27,7 +28,7 @@ public class ClienteDaoJDBC implements ClienteDao {
             st = conn.prepareStatement(
                     "INSERT INTO Clientes (Nome) VALUES (?) RETURNING Id"
             );
-            st.setString(1, obj.getNome());
+            st.setString(1, obj.getNome().toUpperCase());
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -50,7 +51,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 
         try {
             st = conn.prepareStatement("SELECT * FROM Clientes WHERE nome = ?");
-            st.setString(1, nome);
+            st.setString(1, nome.toUpperCase(Locale.ITALY));
             rs = st.executeQuery();
             if (rs.next()) {
                 return instantiateCliente(rs);

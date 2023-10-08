@@ -344,6 +344,8 @@ public class PesquisaView extends javax.swing.JFrame {
 
     private void btnEstornarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstornarVendaActionPerformed
         // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_btnEstornarVendaActionPerformed
 
     private void txtClienteDetalhadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteDetalhadoActionPerformed

@@ -183,7 +183,7 @@ public class ClienteView extends javax.swing.JFrame {
         lblErro.setText("");
 
         if (existe == true) {
-            model.addRow(new Object[]{controller.pegarIdCliente(cliente), nome});
+            model.addRow(new Object[]{controller.pegarIdCliente(cliente), nome.toUpperCase()});
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed

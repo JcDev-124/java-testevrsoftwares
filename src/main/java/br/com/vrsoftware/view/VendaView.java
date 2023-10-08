@@ -15,8 +15,6 @@ import br.com.vrsoftware.controller.ProdutoController;
 import br.com.vrsoftware.controller.VendasController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,6 +27,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -67,9 +67,10 @@ public class VendaView extends javax.swing.JFrame {
         lblClienteErro.setVisible(false);
 
         addChangeListenerProduto(txtDescricao, btbRegistrar, lblErroDescricao, txtPrecoProduto, txtQuantidadeComprada, txtTotal);
-        addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro);
+        addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro,tblProdutos);
         addChangeListenerQuantidade(txtQuantidadeComprada, btbRegistrar, lblErroQuantidade);
         btnFinalizar.setEnabled(false);
+        monitorarAlteracoesNaTabela(tblProdutos, btnFinalizar);
 
     }
 
@@ -403,6 +404,7 @@ public class VendaView extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Venda finalizada", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
+
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         // TODO add your handling code here:
 
@@ -481,7 +483,7 @@ public class VendaView extends javax.swing.JFrame {
         });
     }
 
-    private static void addChangeListenerCliente(JTextField textField, JButton btnFinalizar, JLabel lblErro) {
+    private static void addChangeListenerCliente(JTextField textField, JButton btnFinalizar, JLabel lblErro, JTable tblProdutos) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -506,6 +508,11 @@ public class VendaView extends javax.swing.JFrame {
                 if (cliente != null) {
                     btnFinalizar.setEnabled(true);
                     lblErro.setVisible(false);
+                    int rowCount = tblProdutos.getRowCount();
+
+                    if (rowCount == 0) {
+                        btnFinalizar.setEnabled(false);
+                    }else btnFinalizar.setEnabled(true);
 
                 } else {
                     btnFinalizar.setEnabled(false);
@@ -544,6 +551,20 @@ public class VendaView extends javax.swing.JFrame {
                 } else {
                     btnSalvar.setEnabled(false);
                     lblErroQuantidade.setVisible(true);
+                }
+            }
+        });
+    }
+
+    public static void monitorarAlteracoesNaTabela(JTable table, JButton btnFinalizar) {
+        table.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int rowCount = table.getRowCount();
+                if (rowCount == 0) {
+                    btnFinalizar.setEnabled(false);
+                } else {
+                    btnFinalizar.setEnabled(true);
                 }
             }
         });
