@@ -258,16 +258,13 @@ public class ProdutoView extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         model = (DefaultTableModel) tblProduto.getModel();
-        Produto aux = new Produto();
         ProdutoController controller = new ProdutoController();
         String nome = txtDescricao.getText();
         Integer quantidade = Integer.parseInt(txtQuantidade.getText());
         Double preco = Double.parseDouble(txtPreco.getText());
         Produto obj = new Produto(nome, preco, quantidade);
-        aux = controller.retornaProdutoPorNome(nome);
-        if(aux == null )
-         JOptionPane.showMessageDialog(null, "PRODUTO NÃO CADASTRADO", "Aviso", JOptionPane.WARNING_MESSAGE);
-        else controller.atualizaProduto(obj);
+        
+        controller.atualizaProduto(obj);
         limpaCampos();
         model.setRowCount(0);
         carregarDadosTabela();

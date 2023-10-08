@@ -12,21 +12,24 @@ import br.com.vrsoftware.controller.OrdemVendasController;
 import br.com.vrsoftware.controller.VendasController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
  * @author Julio
  */
 public class PesquisaView extends javax.swing.JFrame {
-    
-        private DefaultTableModel model;
-        
 
+    private DefaultTableModel model;
 
     /**
      * Creates new form PesquisaView
@@ -44,8 +47,19 @@ public class PesquisaView extends javax.swing.JFrame {
         int x = (dimensoesTela.width - larguraTela) / 2;
         int y = (dimensoesTela.height - alturaTela) / 2;
         this.setLocation(x, y);
+
         initComponents();
+        formatarCampoData();
         carregarDadosTabela();
+    }
+
+    private void formatarCampoData() {
+        try {
+            MaskFormatter mask = new MaskFormatter("##/##/####");
+            mask.install(fmtTxtData);
+        } catch (ParseException ex) {
+            System.out.println("Erro ao criar a mascara");
+        }
     }
 
     /**
@@ -57,13 +71,13 @@ public class PesquisaView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dtVenda = new com.toedter.calendar.JDateChooser();
         lblData = new javax.swing.JLabel();
         btnPesquisar = new javax.swing.JButton();
         btbLimpar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblVendas = new javax.swing.JTable();
         btnFechar = new javax.swing.JButton();
+        fmtTxtData = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +92,11 @@ public class PesquisaView extends javax.swing.JFrame {
         });
 
         btbLimpar.setText("Limpar");
+        btbLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btbLimparActionPerformed(evt);
+            }
+        });
 
         tblVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,16 +147,14 @@ public class PesquisaView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblData, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnPesquisar)
                         .addGap(18, 18, 18)
-                        .addComponent(btbLimpar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(dtVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btbLimpar))
+                    .addComponent(fmtTxtData))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -146,8 +163,9 @@ public class PesquisaView extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnFechar)
-                    .addComponent(dtVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblData))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblData)
+                        .addComponent(fmtTxtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPesquisar)
@@ -161,6 +179,17 @@ public class PesquisaView extends javax.swing.JFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         // TODO add your handling code here:
+        model = (DefaultTableModel) tblVendas.getModel();
+
+        TableRowSorter sorter = new TableRowSorter<TableModel>(model);
+        tblVendas.setRowSorter(sorter);
+
+        String data = fmtTxtData.getText();
+        if (data != null) {
+            sorter.setRowFilter(RowFilter.regexFilter(("(?i)" + data)));
+        } else {
+            sorter.setRowFilter(null);
+        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -175,47 +204,50 @@ public class PesquisaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         OrdemVendasController controller = new OrdemVendasController();
         ListSelectionModel tableSelectionModel = tblVendas.getSelectionModel();
-        
+
         tblVendas.setSelectionModel(tableSelectionModel);
-        
+
         Integer id = Integer.parseInt(tblVendas.getValueAt(tblVendas.getSelectedRow(), 3).toString());
-        
+
         List<OrdemVenda> list = controller.retornaVendasPorId(id);
-        
-        
-        
+
+
     }//GEN-LAST:event_tblVendasMouseClicked
 
-    
-    
- private void carregarDadosTabela() {
-    ClienteController controllerCliente = new ClienteController();
-    Integer id_aux;
-    Integer id;
-    Integer id_cliente;
-    String nome_aux;
-    Double valorTotal;
-    LocalDate date_aux;
-    EnumStatus status;
-    VendasController controller = new VendasController();
-    List<Vendas> vendas = controller.retornaTodasVendas();
+    private void btbLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbLimparActionPerformed
+        // TODO add your handling code here:
+        fmtTxtData.setText(null);
+        btnPesquisarActionPerformed(evt);
+    }//GEN-LAST:event_btbLimparActionPerformed
 
-    model = (DefaultTableModel) tblVendas.getModel();
+    private void carregarDadosTabela() {
+        ClienteController controllerCliente = new ClienteController();
+        Integer id_aux;
+        Integer id;
+        Integer id_cliente;
+        String nome_aux;
+        Double valorTotal;
+        LocalDate date_aux;
+        EnumStatus status;
+        VendasController controller = new VendasController();
+        List<Vendas> vendas = controller.retornaTodasVendas();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        model = (DefaultTableModel) tblVendas.getModel();
 
-    for (Vendas x : vendas) {
-        id = x.getId();
-        id_aux = x.getCliente();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        nome_aux = controllerCliente.pegarNomeCliente(id_aux);
-        date_aux = x.getData();
-        String formattedDate = date_aux.format(formatter);  // Formatar a data
-        valorTotal = x.getValorTotal();
-        status =  x.pegarStatus();
-        model.addRow(new Object[]{formattedDate, nome_aux, status,valorTotal, id});
+        for (Vendas x : vendas) {
+            id = x.getId();
+            id_aux = x.getCliente();
+
+            nome_aux = controllerCliente.pegarNomeCliente(id_aux);
+            date_aux = x.getData();
+            String formattedDate = date_aux.format(formatter);  // Formatar a data
+            valorTotal = x.getValorTotal();
+            status = x.pegarStatus();
+            model.addRow(new Object[]{formattedDate, nome_aux, status, valorTotal, id});
+        }
     }
-}
 
     /**
      * @param args the command line arguments
@@ -256,7 +288,7 @@ public class PesquisaView extends javax.swing.JFrame {
     private javax.swing.JButton btbLimpar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisar;
-    private com.toedter.calendar.JDateChooser dtVenda;
+    private javax.swing.JFormattedTextField fmtTxtData;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblData;
     private javax.swing.JTable tblVendas;

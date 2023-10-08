@@ -66,9 +66,9 @@ public class VendaView extends javax.swing.JFrame {
 
         lblClienteErro.setVisible(false);
 
-        addChangeListenerProduto(lblDescricao, btbRegistrar, lblErroDescricao, lblPreco, lblQuantidade, txtTotal);
+        addChangeListenerProduto(txtDescricao, btbRegistrar, lblErroDescricao, txtPrecoProduto, txtQuantidadeComprada, txtTotal);
         addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro);
-        addChangeListenerQuantidade(lblQuantidade, btbRegistrar, lblErroQuantidade);
+        addChangeListenerQuantidade(txtQuantidadeComprada, btbRegistrar, lblErroQuantidade);
         btnFinalizar.setEnabled(false);
 
     }
@@ -83,11 +83,11 @@ public class VendaView extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        lblDescricao = new javax.swing.JTextField();
+        txtDescricao = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        lblPreco = new javax.swing.JTextField();
+        txtPrecoProduto = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        lblQuantidade = new javax.swing.JTextField();
+        txtQuantidadeComprada = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         txtTotal = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -114,30 +114,30 @@ public class VendaView extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblDescricao)
+            .addComponent(txtDescricao)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Preço"));
 
-        lblPreco.setEditable(false);
+        txtPrecoProduto.setEditable(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblPreco, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+            .addComponent(txtPrecoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtPrecoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Quantidade"));
@@ -146,13 +146,13 @@ public class VendaView extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblQuantidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+            .addComponent(txtQuantidadeComprada, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtQuantidadeComprada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Total"));
@@ -349,13 +349,13 @@ public class VendaView extends javax.swing.JFrame {
         OrdemVendasController controllerVendas = new OrdemVendasController();
         Integer quantidade;
         List<OrdemVenda> listOrdemVenda = new ArrayList<>();
-        String descricao = lblDescricao.getText();
+        String descricao = txtDescricao.getText();
 
         Double preco = controller.retornaPrecoProduto(descricao);
-        lblPreco.setText(preco.toString());
+        txtPrecoProduto.setText(preco.toString());
         txtTotal.setText(String.valueOf(0));
 
-        quantidade = Integer.parseInt(lblQuantidade.getText());
+        quantidade = Integer.parseInt(txtQuantidadeComprada.getText());
         Double total = preco * quantidade;
         txtTotal.setText(total.toString());
         txtSubTotal.setText(String.valueOf(0));
@@ -363,7 +363,7 @@ public class VendaView extends javax.swing.JFrame {
         model = (DefaultTableModel) tblProdutos.getModel();
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        if (atualizaTabela(tblProdutos, lblDescricao.getText(), Integer.parseInt(lblQuantidade.getText())) == false) {
+        if (atualizaTabela(tblProdutos, txtDescricao.getText(), Integer.parseInt(txtQuantidadeComprada.getText())) == false) {
             model.addRow(new Object[]{descricao, quantidade, preco});
         }
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -567,10 +567,10 @@ public class VendaView extends javax.swing.JFrame {
     }
 
     private void limparCampos() {
-        lblPreco.setText("");
-        lblQuantidade.setText("");
+        txtPrecoProduto.setText("");
+        txtQuantidadeComprada.setText("");
         txtTotal.setText("");
-        lblDescricao.setText("");
+        txtDescricao.setText("");
         lblErroDescricao.setVisible(false);
         lblErroQuantidade.setVisible(false);
     }
@@ -665,13 +665,13 @@ public class VendaView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblClienteErro;
-    private javax.swing.JTextField lblDescricao;
     private javax.swing.JLabel lblErroDescricao;
     private javax.swing.JLabel lblErroQuantidade;
-    private javax.swing.JTextField lblPreco;
-    private javax.swing.JTextField lblQuantidade;
     private javax.swing.JTable tblProdutos;
     private javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtDescricao;
+    private javax.swing.JTextField txtPrecoProduto;
+    private javax.swing.JTextField txtQuantidadeComprada;
     private javax.swing.JTextField txtSubTotal;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
