@@ -17,12 +17,14 @@ public class Vendas {
     private LocalDate data;
     private Integer id_cliente;
     private Integer status;
+    private Double valorTotal;
 
     public Vendas(){}
     
-    public Vendas(LocalDate data, Integer id_cliente, EnumStatus status) {
+    public Vendas(LocalDate data, Integer id_cliente, EnumStatus status, Double valorTotal) {
         this.data = data;
         this.id_cliente = id_cliente;
+        this.valorTotal = valorTotal;
         setStatus(status);
     }
 
@@ -48,6 +50,14 @@ public class Vendas {
 
     public void setCliente(Integer id_cliente) {
         this.id_cliente = id_cliente;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
     
     

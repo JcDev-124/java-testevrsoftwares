@@ -28,12 +28,13 @@ public class VendasDaoJDBC implements VendasDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO vendas (data, cliente_id, status) VALUES (?, ?, ?) RETURNING ID"
+                    "INSERT INTO vendas (data, cliente_id, status, valorTotal) VALUES (?, ?, ?, ?) RETURNING ID"
             );
 
             st.setDate(1, obj.getData() != null ? Date.valueOf(obj.getData()) : null);
             st.setInt(2, obj.getCliente());
             st.setString(3, obj.pegarStatus().name());
+            st.setDouble(4, obj.getValorTotal());
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -77,6 +78,7 @@ public class VendasDaoJDBC implements VendasDao {
         Timestamp timestamp = rs.getTimestamp("data");
         obj.setData(timestamp != null ? timestamp.toLocalDateTime().toLocalDate() : null);
         obj.setStatus(EnumStatus.valueOf(rs.getString("status")));
+        obj.setValorTotal(rs.getDouble("valorTotal"));
         return obj;
     }
 

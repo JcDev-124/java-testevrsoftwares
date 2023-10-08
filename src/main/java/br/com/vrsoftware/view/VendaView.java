@@ -18,7 +18,6 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -75,6 +75,7 @@ public class VendaView extends javax.swing.JFrame {
 
         addChangeListenerProduto(lblDescricao, btbRegistrar, lblErroDescricao, lblPreco, lblQuantidade, txtTotal);
         addChangeListenerCliente(txtCliente, btnFinalizar, lblClienteErro);
+        btnFinalizar.setEnabled(false);
 
     }
 
@@ -299,11 +300,9 @@ public class VendaView extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtCliente))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblClienteErro, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblClienteErro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnFechar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
@@ -323,33 +322,29 @@ public class VendaView extends javax.swing.JFrame {
                         .addGap(7, 7, 7)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblErroQuantidade)
-                                .addGap(2, 2, 2)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(33, 33, 33)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btbRegistrar)
-                                    .addComponent(btnLimpar)))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblErroQuantidade)
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnFinalizar)
-                            .addComponent(jLabel1)
-                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblClienteErro)
-                        .addGap(33, 33, 33))))
+                            .addComponent(btbRegistrar)
+                            .addComponent(btnLimpar)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblClienteErro)
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFinalizar)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -371,22 +366,22 @@ public class VendaView extends javax.swing.JFrame {
         txtTotal.setText(total.toString());
         txtSubTotal.setText(String.valueOf(0));
         addChangeListenerAtualizaValor(txtTotal, txtSubTotal, total);
-
         model = (DefaultTableModel) tblProdutos.getModel();
         tblProdutos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        model.addRow(new Object[]{descricao, quantidade, total});
+
+        if (atualizaTabela(tblProdutos, lblDescricao.getText(), Integer.parseInt(lblQuantidade.getText())) == false) {
+            model.addRow(new Object[]{descricao, quantidade, total});
+        }
         tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(150);
         tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(70);
         tblProdutos.getColumnModel().getColumn(2).setPreferredWidth(70);
-
-// Supondo que txtSubTotal seja um componente de interface gráfica que aceita texto
-        OrdemVenda ordem = new OrdemVenda(controller.pegarIdProduto(descricao), quantidade, total);
-        controllerVendas.inserirOrdemVendas(ordem);
 
         lblPreco.setText("");
         lblQuantidade.setText("");
         txtTotal.setText("");
         lblDescricao.setText("");
+        lblErroDescricao.setVisible(false);
+
 
     }//GEN-LAST:event_btbRegistrarActionPerformed
 
@@ -395,6 +390,8 @@ public class VendaView extends javax.swing.JFrame {
         controllerVendas.deletaLinhas();
     }
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        model = (DefaultTableModel) tblProdutos.getModel();
+
         ClienteController controller = new ClienteController();
         VendasController controllerVenda = new VendasController();
 
@@ -405,10 +402,17 @@ public class VendaView extends javax.swing.JFrame {
         String cliente = txtCliente.getText();
         Integer id = controller.pegarIdCliente(cliente);
         EnumStatus status = EnumStatus.FINALIZADO;
-        Vendas venda = new Vendas(LocalDate.parse(formattedDate, formatter), id, status);
+        String valor = txtSubTotal.getText();
+        Double valorTotal = Double.parseDouble(valor);
+        Vendas venda = new Vendas(LocalDate.parse(formattedDate, formatter), id, status, valorTotal);
 
         controllerVenda.inserirVenda(venda);
-        JOptionPane.showMessageDialog(null, "Venda finalizada em ", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+        model.setRowCount(0);
+        txtSubTotal.setText("");
+        txtCliente.setText("");
+        lblErroDescricao.setVisible(false);
+        lblClienteErro.setVisible(false);
+        JOptionPane.showMessageDialog(null, "Venda finalizada", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -482,7 +486,7 @@ public class VendaView extends javax.swing.JFrame {
                 } else {
                     btnSalvar.setEnabled(false);
                     lblErro.setVisible(true);
-                    ;
+
                 }
 
             }
@@ -525,6 +529,24 @@ public class VendaView extends javax.swing.JFrame {
             }
 
         });
+    }
+
+
+
+    public static boolean atualizaTabela(JTable table, String targetString, Integer incrementValue) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int rowCount = model.getRowCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            Object value = model.getValueAt(i, 0);
+            if (value != null && value.toString().equals(targetString)) {
+                int currentValue = (int) model.getValueAt(i, 1);
+                model.setValueAt(currentValue + incrementValue, i, 1);
+                return true;
+
+            }
+        }
+        return false;
     }
 
     /**

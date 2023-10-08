@@ -84,11 +84,11 @@ public class PesquisaView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Data", "Cliente", "Status", "Id"
+                "Data", "Cliente", "Status", "Valor Total", "Id"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -106,6 +106,7 @@ public class PesquisaView extends javax.swing.JFrame {
             tblVendas.getColumnModel().getColumn(1).setResizable(false);
             tblVendas.getColumnModel().getColumn(2).setResizable(false);
             tblVendas.getColumnModel().getColumn(3).setResizable(false);
+            tblVendas.getColumnModel().getColumn(4).setResizable(false);
         }
 
         btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -132,7 +133,9 @@ public class PesquisaView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,7 +149,7 @@ public class PesquisaView extends javax.swing.JFrame {
                     .addComponent(dtVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblData))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,6 +190,7 @@ public class PesquisaView extends javax.swing.JFrame {
     Integer id;
     Integer id_cliente;
     String nome_aux;
+    Double valorTotal;
     LocalDate date_aux;
     EnumStatus status;
     VendasController controller = new VendasController();
@@ -203,9 +207,9 @@ public class PesquisaView extends javax.swing.JFrame {
         nome_aux = controllerCliente.pegarNomeCliente(id_aux);
         date_aux = x.getData();
         String formattedDate = date_aux.format(formatter);  // Formatar a data
-
+        valorTotal = x.getValorTotal();
         status =  x.pegarStatus();
-        model.addRow(new Object[]{formattedDate, nome_aux, status, id});
+        model.addRow(new Object[]{formattedDate, nome_aux, status,valorTotal, id});
     }
 }
 
