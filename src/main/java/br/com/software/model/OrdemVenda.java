@@ -73,13 +73,5 @@ public class OrdemVenda {
         this.preco = preco;
     }
     
-    
-    
-    
-    
-    
-    
-    public double subTotal(){
-        return preco * quantidade;
-    }
+   
 }

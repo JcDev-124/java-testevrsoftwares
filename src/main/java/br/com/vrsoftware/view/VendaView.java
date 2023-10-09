@@ -220,6 +220,11 @@ public class VendaView extends javax.swing.JFrame {
         });
 
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         btnFinalizar.setText("Finalizar venda");
         btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
@@ -296,7 +301,7 @@ public class VendaView extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(lblClienteErro, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(btnFinalizar)
@@ -397,7 +402,8 @@ public class VendaView extends javax.swing.JFrame {
         String formattedDate = LocalDate.now().format(formatter);
 
         String cliente = txtCliente.getText();
-        Integer id = controller.pegarIdCliente(cliente);
+        Integer id = controller.pegarCliente(cliente).getId();
+
         EnumStatus status = EnumStatus.FINALIZADO;
         String valor = txtSubTotal.getText();
         Double valorTotal = Double.parseDouble(valor);
@@ -428,22 +434,37 @@ public class VendaView extends javax.swing.JFrame {
 
     private void btnRegistraClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistraClienteActionPerformed
         // TODO add your handling code here:
+        model = (DefaultTableModel) tblProdutos.getModel();
+
         ClienteController controller = new ClienteController();
+
         btnFinalizar.setEnabled(false);
         String nome = txtCliente.getText();
-        Integer id = controller.pegarIdCliente(nome);
-        int rowCount = tblProdutos.getRowCount();
+        Integer id = controller.pegarCliente(nome).getId();
         
-        if(id == null || rowCount == 0){
+        if(id == null ) model.setRowCount(0);
+        int rowCount = tblProdutos.getRowCount();
+
+        if (rowCount == 0) {
             btnFinalizar.setEnabled(false);
-            lblClienteErro.setVisible(true);
-        }else{
-            lblClienteErro.setVisible(false);
+        } else {
             btnFinalizar.setEnabled(true);
         }
 
 
     }//GEN-LAST:event_btnRegistraClienteActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        // TODO add your handling code here:
+        txtPrecoProduto.setText("");
+        txtQuantidadeComprada.setText("");
+        txtDescricao.setText("");
+        txtTotal.setText("");
+        lblErroDescricao.setVisible(false);
+        lblErroQuantidade.setVisible(false);
+        btbRegistrar.setEnabled(false);
+
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     private static void addChangeListenerAtualizaValor(JTextField textField, JTextField textField2, Double valor) {
         textField.getDocument().addDocumentListener(new DocumentListener() {

@@ -32,33 +32,7 @@ public class ClienteController {
         }
     }
 
-    public Integer pegarIdCliente(Cliente obj) {
-        try {
-            Cliente cliente = clienteDao.findById(obj.getNome());
-            if (cliente != null) {
-                return cliente.getId();
-            } else {
-                throw new RuntimeException("Cliente não encontrado.");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter ID do cliente: " + e.getMessage());
-        }
-    }
 
-    public Integer pegarIdCliente(String nome) {
-        try {
-            Cliente cliente = clienteDao.findById(nome);
-            if (cliente != null) {
-                return cliente.getId();
-            } else {
-                JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
-
-                throw new RuntimeException("Cliente não encontrado.");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter ID do cliente: " + e.getMessage());
-        }
-    }
 
     public Cliente pegarCliente(String nome) {
         try {
