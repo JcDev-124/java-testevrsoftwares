@@ -26,6 +26,13 @@ public class Vendas {
         this.valorTotal = valorTotal;
         setStatus(status);
     }
+    public Vendas(Integer id, LocalDate data, Integer id_cliente, EnumStatus status, Double valorTotal) {
+        this.id = id;
+        this.data = data;
+        this.id_cliente = id_cliente;
+        this.valorTotal = valorTotal;
+        setStatus(status);
+    }
 
     public Integer getId() {
         return id;

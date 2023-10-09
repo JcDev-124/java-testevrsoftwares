@@ -20,7 +20,7 @@ public class ClienteController {
 
 
         try {
-            if(obj.getNome() == null){
+            if(obj == null){
                 throw new ExceptionBussines("Argumento invalido.");
             }
 
