@@ -4,21 +4,17 @@
  */
 package br.com.vrsoftware.view;
 
-import br.com.software.model.Cliente;
-import br.com.software.model.EnumStatus;
-import br.com.software.model.OrdemVenda;
-import br.com.software.model.Produto;
-import br.com.software.model.Vendas;
+import br.com.vrsoftware.model.EnumStatus;
+import br.com.vrsoftware.model.OrdemVenda;
+import br.com.vrsoftware.model.Produto;
+import br.com.vrsoftware.model.Vendas;
 import br.com.vrsoftware.controller.ClienteController;
 import br.com.vrsoftware.controller.OrdemVendasController;
 import br.com.vrsoftware.controller.ProdutoController;
 import br.com.vrsoftware.controller.VendasController;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;

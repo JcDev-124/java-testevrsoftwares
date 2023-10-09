@@ -1,6 +1,6 @@
 package br.com.vrsoftware.controller;
 
-import br.com.software.model.Cliente;
+import br.com.vrsoftware.model.Cliente;
 import br.com.vrsoftware.controller.ExceptionBussines.ExceptionBussines;
 import br.com.vrsoftware.dao.ClienteDao;
 import br.com.vrsoftware.dao.DaoFactory;

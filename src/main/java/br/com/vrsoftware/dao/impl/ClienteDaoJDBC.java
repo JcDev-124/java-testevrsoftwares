@@ -1,6 +1,6 @@
 package br.com.vrsoftware.dao.impl;
 
-import br.com.software.model.Cliente;
+import br.com.vrsoftware.model.Cliente;
 import br.com.vrsoftware.dao.ClienteDao;
 import br.com.vrsoftware.exceptions.db.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ClienteDaoJDBC implements ClienteDao {
 

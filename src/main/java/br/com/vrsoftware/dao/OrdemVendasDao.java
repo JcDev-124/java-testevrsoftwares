@@ -4,7 +4,7 @@
  */
 package br.com.vrsoftware.dao;
 
-import br.com.software.model.OrdemVenda;
+import br.com.vrsoftware.model.OrdemVenda;
 import java.util.List;
 
 /**

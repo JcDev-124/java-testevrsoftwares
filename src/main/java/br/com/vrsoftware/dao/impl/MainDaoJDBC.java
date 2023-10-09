@@ -4,17 +4,12 @@
  */
 package br.com.vrsoftware.dao.impl;
 
-import br.com.software.model.Cliente;
 import br.com.vrsoftware.dao.MainDao;
 import br.com.vrsoftware.exceptions.db.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

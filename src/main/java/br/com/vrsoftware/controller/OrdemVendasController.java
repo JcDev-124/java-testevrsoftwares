@@ -1,6 +1,6 @@
 package br.com.vrsoftware.controller;
 
-import br.com.software.model.OrdemVenda;
+import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.controller.ExceptionBussines.ExceptionBussines;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.OrdemVendasDao;

@@ -4,14 +4,12 @@
  */
 package br.com.vrsoftware.view;
 
-import br.com.software.model.Produto;
+import br.com.vrsoftware.model.Produto;
 import br.com.vrsoftware.controller.ProdutoController;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

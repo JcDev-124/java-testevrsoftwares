@@ -4,10 +4,10 @@
  */
 package br.com.vrsoftware.view;
 
-import br.com.software.model.EnumStatus;
-import br.com.software.model.OrdemVenda;
-import br.com.software.model.Produto;
-import br.com.software.model.Vendas;
+import br.com.vrsoftware.model.EnumStatus;
+import br.com.vrsoftware.model.OrdemVenda;
+import br.com.vrsoftware.model.Produto;
+import br.com.vrsoftware.model.Vendas;
 import br.com.vrsoftware.controller.ClienteController;
 import br.com.vrsoftware.controller.OrdemVendasController;
 import br.com.vrsoftware.controller.ProdutoController;

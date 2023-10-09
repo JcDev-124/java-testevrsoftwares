@@ -5,7 +5,7 @@
 package br.com.vrsoftware.dao.impl;
 
 // Importações omitidas para brevidade
-import br.com.software.model.OrdemVenda;
+import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.dao.OrdemVendasDao;
 import br.com.vrsoftware.exceptions.db.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
