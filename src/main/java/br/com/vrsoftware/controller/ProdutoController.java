@@ -18,19 +18,17 @@ public class ProdutoController {
 
     public boolean inserirProduto(Produto obj) {
         try {
+            if (obj == null) throw new ExceptionBussines("Argumento invalido.");
             Produto produtoExistente = produtoDao.findById(obj.getDescricao());
 
             if (produtoExistente != null && produtoExistente.getDescricao().equalsIgnoreCase(obj.getDescricao())) {
                 JOptionPane.showMessageDialog(null, "Produto já cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
-
                 throw new ExceptionBussines("Produto já cadastrado.");
-
             }
-
             produtoDao.insert(obj);
             return true;
         } catch (Exception e) {
-            return false;
+            throw new ExceptionBussines("Erro: " + e.getMessage());
         }
     }
 

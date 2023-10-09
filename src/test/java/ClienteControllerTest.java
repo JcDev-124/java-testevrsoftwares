@@ -40,6 +40,7 @@ public class ClienteControllerTest {
         //Assertions
         Mockito.verify(clienteDao).findById(cliente.getNome());
         Mockito.verify(clienteDao).insert(cliente);
+        org.junit.jupiter.api.Assertions.assertTrue(controller.inserirCliente(cliente));
     }
 
     @Test
