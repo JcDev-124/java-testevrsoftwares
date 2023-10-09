@@ -16,9 +16,13 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -29,14 +33,14 @@ import javax.swing.text.MaskFormatter;
  * @author Julio
  */
 public class PesquisaView extends javax.swing.JFrame {
-
+    
     private DefaultTableModel model;
 
     /**
      * Creates new form PesquisaView
      */
     public PesquisaView() {
-
+        
         initComponents();
         formatarCampoData();
         carregarDadosTabela();
@@ -45,8 +49,10 @@ public class PesquisaView extends javax.swing.JFrame {
         tblVendas.getColumnModel().getColumn(4).setMinWidth(0);
         tblVendas.getColumnModel().getColumn(4).setMaxWidth(0);
         tblVendas.getColumnModel().getColumn(4).setWidth(0);
+        btnEstornarVenda.setEnabled(false);
+        addChangeListenerAtualizaBtnEstorno(txtClienteDetalhado,btnEstornarVenda);
     }
-
+    
     private void formatarCampoData() {
         try {
             MaskFormatter mask = new MaskFormatter("##/##/####");
@@ -288,10 +294,10 @@ public class PesquisaView extends javax.swing.JFrame {
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         // TODO add your handling code here:
         model = (DefaultTableModel) tblVendas.getModel();
-
+        
         TableRowSorter sorter = new TableRowSorter<TableModel>(model);
         tblVendas.setRowSorter(sorter);
-
+        
         String data = fmtTxtData.getText();
         if (data != null && !data.trim().isEmpty()) {
             sorter.setRowFilter(RowFilter.regexFilter(("(?i)" + data)));
@@ -312,19 +318,19 @@ public class PesquisaView extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         ListSelectionModel tableSelectionModel = tblVendas.getSelectionModel();
-
+        
         tblVendas.setSelectionModel(tableSelectionModel);
-
+        
         String nomeCliente = tblVendas.getValueAt(tblVendas.getSelectedRow(), 1).toString();
         String dataVenda = tblVendas.getValueAt(tblVendas.getSelectedRow(), 0).toString();
         String valorTotal = tblVendas.getValueAt(tblVendas.getSelectedRow(), 3).toString();
         Integer id = (Integer) tblVendas.getValueAt(tblVendas.getSelectedRow(), 4);
-
+        
         txtClienteDetalhado.setText(nomeCliente);
         txtDataDetalhada.setText(dataVenda);
         txtValorDetalhado.setText(valorTotal);
         carregarDadosTabelaDetalhada(id);
-
+        
 
     }//GEN-LAST:event_tblVendasMouseClicked
 
@@ -335,34 +341,58 @@ public class PesquisaView extends javax.swing.JFrame {
         tblVendas.setRowSorter(sorter);
         sorter.setRowFilter(null);
     }//GEN-LAST:event_btbLimparActionPerformed
-
+    
     private void btnEstornarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstornarVendaActionPerformed
         // TODO add your handling code here:
         OrdemVendasController controller = new OrdemVendasController();
         VendasController controllerVenda = new VendasController();
         ProdutoController controllerProduto = new ProdutoController();
-
+        
         ListSelectionModel tableSelectionModel = tblVendas.getSelectionModel();
         tblVendas.setSelectionModel(tableSelectionModel);
         Integer id = (Integer) tblVendas.getValueAt(tblVendas.getSelectedRow(), 4);
-
+        
         controllerVenda.atualizaStatusVenda(id);
         List<OrdemVenda> list = controller.retornaVendasPorId(id);
-
+        
         for (OrdemVenda x : list) {
             String descricao = controllerProduto.retornaProdutoPorId(x.getIdProduto()).getDescricao();
             Integer quantidade = x.getQuantidade();
             Double preco = x.getPreco();
-            Produto produto = new Produto(descricao,preco,quantidade);
+            Produto produto = new Produto(descricao, preco, quantidade);
             controllerProduto.atualizaProduto(produto);
         }
         JOptionPane.showMessageDialog(null, "Venda estornada!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-
-        
         
 
     }//GEN-LAST:event_btnEstornarVendaActionPerformed
-
+    private static void addChangeListenerAtualizaBtnEstorno(JTextField textField, JButton btnEstorno) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+            
+            private void textChanged() {
+                if ("".equals(textField.getText())) {
+                    btnEstorno.setEnabled(false);
+                } else {
+                    btnEstorno.setEnabled(true);
+                }
+            }
+            
+        });
+    }
     private void txtClienteDetalhadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteDetalhadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtClienteDetalhadoActionPerformed
@@ -376,7 +406,7 @@ public class PesquisaView extends javax.swing.JFrame {
         txtValorDetalhado.setText("");
 
     }//GEN-LAST:event_btnLimparCamposDetalhadosActionPerformed
-
+    
     private void carregarDadosTabela() {
         ClienteController controllerCliente = new ClienteController();
         Integer id_aux;
@@ -388,15 +418,15 @@ public class PesquisaView extends javax.swing.JFrame {
         EnumStatus status;
         VendasController controller = new VendasController();
         List<Vendas> vendas = controller.retornaTodasVendas();
-
+        
         model = (DefaultTableModel) tblVendas.getModel();
-
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+        
         for (Vendas x : vendas) {
             id = x.getId();
             id_aux = x.getCliente();
-
+            
             nome_aux = controllerCliente.pegarNomeCliente(id_aux);
             date_aux = x.getData();
             String formattedDate = date_aux.format(formatter);  // Formatar a data
@@ -405,26 +435,26 @@ public class PesquisaView extends javax.swing.JFrame {
             model.addRow(new Object[]{formattedDate, nome_aux, status, valorTotal, id});
         }
     }
-
+    
     private void carregarDadosTabelaDetalhada(Integer id) {
-
+        
         OrdemVendasController controller = new OrdemVendasController();
         ProdutoController controllerProduto = new ProdutoController();
         Produto obj = new Produto();
         List<OrdemVenda> list = controller.retornaVendasPorId(id);
-
+        
         model = (DefaultTableModel) tblVendasDetalhadas.getModel();
         model.setRowCount(0);
         for (OrdemVenda x : list) {
             obj = controllerProduto.retornaProdutoPorId(x.getIdProduto());
-
+            
             String descricao = obj.getDescricao();
             Integer qtd = x.getQuantidade();
             Double preco = x.getPreco();
-
+            
             model.addRow(new Object[]{descricao, qtd, preco});
         }
-
+        
     }
 
     /**
