@@ -1,6 +1,7 @@
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.Cliente;
+import br.com.vrsoftware.controller.ExceptionBussines.ExceptionBussines;
 import br.com.vrsoftware.dao.ClienteDao;
 import br.com.vrsoftware.dao.DaoFactory;
 
@@ -22,13 +23,13 @@ public class ClienteController {
 
             if (clienteExistente != null && clienteExistente.getNome().equalsIgnoreCase(obj.getNome())) {
                 JOptionPane.showMessageDialog(null, "Cliente já cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
-                throw new IllegalArgumentException("Cliente já cadastrado.");
+                throw new ExceptionBussines("Cliente já cadastrado.");
             }
 
             clienteDao.insert(obj);
             return true;
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao inserir cliente: " + e.getMessage());
+            throw new ExceptionBussines("Erro ao inserir cliente: " + e.getMessage());
         }
     }
 
@@ -42,10 +43,10 @@ public class ClienteController {
             } else {
                 JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
-                throw new RuntimeException("Cliente não encontrado.");
+                throw new ExceptionBussines("Cliente não encontrado.");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter cliente: " + e.getMessage());
+            throw new ExceptionBussines("Erro ao obter cliente: " + e.getMessage());
         }
     }
 
@@ -57,10 +58,10 @@ public class ClienteController {
             } else {
                 JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
-                throw new RuntimeException("Cliente não encontrado.");
+                throw new ExceptionBussines("Cliente não encontrado.");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter nome do cliente: " + e.getMessage());
+            throw new ExceptionBussines("Erro ao obter nome do cliente: " + e.getMessage());
         }
     }
 
@@ -70,10 +71,10 @@ public class ClienteController {
             if (clientes != null) {
                 return clientes;
             } else {
-                throw new RuntimeException("Não foi possível obter a lista de clientes.");
+                throw new ExceptionBussines("Não foi possível obter a lista de clientes.");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter a lista de clientes: " + e.getMessage());
+            throw new ExceptionBussines("Erro ao obter a lista de clientes: " + e.getMessage());
         }
     }
 }

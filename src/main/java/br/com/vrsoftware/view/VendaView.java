@@ -367,7 +367,7 @@ public class VendaView extends javax.swing.JFrame {
         Integer quantidade;
 
         String descricao = txtDescricao.getText();
-        Double preco = controller.retornaPrecoProduto(descricao.toUpperCase());
+        Double preco = controller.retornaProdutoPorNome(descricao.toUpperCase()).getPreco();
         txtPrecoProduto.setText(preco.toString());
         txtTotal.setText(String.valueOf(0));
         quantidade = Integer.parseInt(txtQuantidadeComprada.getText());
@@ -591,7 +591,7 @@ public class VendaView extends javax.swing.JFrame {
             String col0Value = (String) model.getValueAt(i, 0);
             Integer col1Value = (Integer) model.getValueAt(i, 1);
             Double col2Value = (Double) model.getValueAt(i, 2);
-            Integer id = controllerProduto.pegarIdProduto(col0Value);
+            Integer id = controllerProduto.retornaProdutoPorNome(col0Value).getId();
             OrdemVenda ordemVendas = new OrdemVenda(id, col1Value, col2Value);
             controller.inserirOrdemVendas(ordemVendas);
         }

@@ -1,6 +1,7 @@
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.Produto;
+import br.com.vrsoftware.controller.ExceptionBussines.ExceptionBussines;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.ProdutoDao;
 
@@ -22,48 +23,24 @@ public class ProdutoController {
             if (produtoExistente != null && produtoExistente.getDescricao().equalsIgnoreCase(obj.getDescricao())) {
                 JOptionPane.showMessageDialog(null, "Produto já cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
-                throw new IllegalArgumentException("Produto já cadastrado.");
+                throw new ExceptionBussines("Produto já cadastrado.");
 
             }
 
             produtoDao.insert(obj);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
 
-    public Integer pegarIdProduto(Produto obj) {
-        try {
-            return produtoDao.findById(obj.getDescricao()).getId();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public Integer pegarIdProduto(String descricao) {
-        try {
-            return produtoDao.findById(descricao).getId();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public List<Produto> retornaTodosProdutos() {
+        List<Produto> list = produtoDao.findAll();
         try {
-            return produtoDao.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public Double retornaPrecoProduto(String nome) {
-        try {
-            return produtoDao.findById(nome).getPreco();
+            if (list == null) {
+                throw new ExceptionBussines("Erro ao retornar a lista");
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -71,8 +48,10 @@ public class ProdutoController {
     }
 
     public Produto retornaProdutoPorNome(String nome) {
+        Produto produto = produtoDao.findById(nome);
         try {
-            return produtoDao.findById(nome);
+            if(produto == null) throw new ExceptionBussines("Produto nao existe");
+            return produto;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -80,8 +59,10 @@ public class ProdutoController {
     }
 
     public Produto retornaProdutoPorId(Integer id) {
+        Produto produto = produtoDao.findById(id);
         try {
-            return produtoDao.findById(id);
+            if(produto == null) throw new ExceptionBussines("Produto nao existe");
+            return produto;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -94,7 +75,7 @@ public class ProdutoController {
             if (produto == null) {
                 JOptionPane.showMessageDialog(null, "Produto não cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
-                throw new IllegalArgumentException("Produto não cadastrado.");
+                throw new ExceptionBussines("Produto não cadastrado.");
 
             }
             produtoDao.update(obj);

@@ -1,6 +1,7 @@
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.Vendas;
+import br.com.vrsoftware.controller.ExceptionBussines.ExceptionBussines;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.VendasDao;
 
@@ -15,7 +16,11 @@ public class VendasController {
     }
 
     public void inserirVenda(Vendas venda) {
+
         try {
+            if (venda == null) {
+                throw new ExceptionBussines("Erro ao retornar a lista");
+            }
             vendasDao.insert(venda);
         } catch (Exception e) {
             // Trate a exceção conforme necessário (ex: log, mensagem de erro, etc.)
@@ -38,14 +43,17 @@ public class VendasController {
             throw new RuntimeException("Erro ao obter a lista de vendas: " + e.getMessage());
         }
     }
-    
-        public void atualizaStatusVenda(Integer id) {
+
+    public void atualizaStatusVenda(Integer id) {
+
         try {
+            if(id == null ) throw new ExceptionBussines("VENDA NAO EXISTE");
+
             vendasDao.findByVenda(id);
         } catch (Exception e) {
             // Trate a exceção conforme necessário (ex: log, mensagem de erro, etc.)
             e.printStackTrace();
-            throw new RuntimeException("Venda nao existe! " + e.getMessage());
+            throw new ExceptionBussines("Venda nao existe! " + e.getMessage());
         }
     }
 }

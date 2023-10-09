@@ -238,7 +238,7 @@ public class ProdutoView extends javax.swing.JFrame {
         limpaCampos();
 
         if (existe == true) {
-            model.addRow(new Object[]{controller.pegarIdProduto(produto), descricao.toUpperCase(), quantidade, preco});
+            model.addRow(new Object[]{controller.retornaProdutoPorNome(descricao).getId(), descricao.toUpperCase(), quantidade, preco});
         }
 
         txtPreco.setText("0");

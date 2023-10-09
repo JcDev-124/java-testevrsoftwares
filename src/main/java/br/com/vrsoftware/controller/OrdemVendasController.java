@@ -1,6 +1,7 @@
 package br.com.vrsoftware.controller;
 
 import br.com.software.model.OrdemVenda;
+import br.com.vrsoftware.controller.ExceptionBussines.ExceptionBussines;
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.OrdemVendasDao;
 
@@ -16,11 +17,11 @@ public class OrdemVendasController {
 
     public void inserirOrdemVendas(OrdemVenda obj) {
         try {
+            if(obj == null ) throw new ExceptionBussines("Erro ao inserir a venda");
             ordem.insert(obj);
         } catch (Exception e) {
-            // Trate a exceção conforme necessário (ex: log, mensagem de erro, etc.)
             e.printStackTrace();
-            throw new RuntimeException("Erro ao inserir ordem de vendas: " + e.getMessage());
+            throw new ExceptionBussines("Erro ao inserir ordem de vendas: " + e.getMessage());
         }
     }
 
@@ -30,12 +31,12 @@ public class OrdemVendasController {
             if (vendas != null) {
                 return vendas;
             } else {
-                throw new RuntimeException("Não foi possível obter a lista de vendas para o ID: " + id);
+                throw new ExceptionBussines("Não foi possível obter a lista de vendas para o ID: " + id);
             }
         } catch (Exception e) {
             // Trate a exceção conforme necessário (ex: log, mensagem de erro, etc.)
             e.printStackTrace();
-            throw new RuntimeException("Erro ao obter vendas por ID: " + e.getMessage());
+            throw new ExceptionBussines("Erro ao obter vendas por ID: " + e.getMessage());
         }
     }
 }
