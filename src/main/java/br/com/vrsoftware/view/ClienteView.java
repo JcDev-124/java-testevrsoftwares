@@ -167,7 +167,7 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String nome = txtNome.getText();
-        Cliente cliente = new Cliente(null, nome);
+        Cliente cliente = new Cliente( nome);
         ClienteController controller = new ClienteController();
 
         boolean existe = controller.inserirCliente(cliente);

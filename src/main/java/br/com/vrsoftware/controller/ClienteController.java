@@ -17,15 +17,19 @@ public class ClienteController {
     }
 
     public boolean inserirCliente(Cliente obj) {
+
+
         try {
-            // Verifica se o cliente já está cadastrado
+            if(obj.getNome() == null){
+                throw new ExceptionBussines("Argumento invalido.");
+            }
+
             Cliente clienteExistente = clienteDao.findById(obj.getNome());
 
             if (clienteExistente != null && clienteExistente.getNome().equalsIgnoreCase(obj.getNome())) {
                 JOptionPane.showMessageDialog(null, "Cliente já cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
                 throw new ExceptionBussines("Cliente já cadastrado.");
             }
-
             clienteDao.insert(obj);
             return true;
         } catch (Exception e) {
@@ -37,6 +41,7 @@ public class ClienteController {
 
     public Cliente pegarCliente(String nome) {
         try {
+            if(nome == null) throw new ExceptionBussines("Argumento invalido.");
             Cliente cliente = clienteDao.findById(nome);
             if (cliente != null) {
                 return cliente;
@@ -52,6 +57,7 @@ public class ClienteController {
 
     public String pegarNomeCliente(Integer id) {
         try {
+            if(id == null) throw new ExceptionBussines("Argumento invalido.");
             Cliente cliente = clienteDao.findById(id);
             if (cliente != null) {
                 return cliente.getNome();
@@ -71,10 +77,10 @@ public class ClienteController {
             if (clientes != null) {
                 return clientes;
             } else {
-                throw new ExceptionBussines("Não foi possível obter a lista de clientes.");
+                throw new ExceptionBussines("Não foi possivel obter a lista de clientes.");
             }
         } catch (Exception e) {
-            throw new ExceptionBussines("Erro ao obter a lista de clientes: " + e.getMessage());
+            throw new ExceptionBussines("Erro: " + e.getMessage());
         }
     }
 }

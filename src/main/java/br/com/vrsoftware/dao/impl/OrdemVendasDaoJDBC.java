@@ -24,27 +24,9 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
         this.conn = conn;
     }
 
-    public OrdemVenda findById(Integer id) {
-        PreparedStatement st = null;
-        ResultSet rs = null;
 
-        try {
-            st = conn.prepareStatement("SELECT * FROM OrdemDeVenda WHERE id_ordem_de_venda = ?");
-            st.setInt(1, id);
-            rs = st.executeQuery();
 
-            if (rs.next()) {
-                return instantiateOrdemDeVenda(rs);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        } finally {
-            DB.CloseStatement(st);
-            DB.CloseResultSet(rs);
-        }
-    }
-
+    @Override
     public void insert(OrdemVenda ordemDeVenda) {
         PreparedStatement st = null;
         try {
@@ -63,7 +45,7 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
             DB.CloseStatement(st);
         }
     }
-
+    @Override
     public List<OrdemVenda> findAll(Integer idVenda) {
         PreparedStatement st = null;
         ResultSet rs = null;

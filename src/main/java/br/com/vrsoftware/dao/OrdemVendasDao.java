@@ -15,8 +15,6 @@ public interface OrdemVendasDao {
 
     void insert(OrdemVenda obj);
 
-    OrdemVenda findById(Integer id);
-
     List<OrdemVenda> findAll(Integer id_venda);
     
 }
