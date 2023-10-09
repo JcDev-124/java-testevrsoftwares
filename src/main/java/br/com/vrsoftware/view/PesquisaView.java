@@ -427,7 +427,7 @@ public class PesquisaView extends javax.swing.JFrame {
             id = x.getId();
             id_aux = x.getCliente();
             
-            nome_aux = controllerCliente.pegarNomeCliente(id_aux);
+            nome_aux = controllerCliente.pegarNomeCliente(id_aux).getNome();
             date_aux = x.getData();
             String formattedDate = date_aux.format(formatter);  // Formatar a data
             valorTotal = x.getValorTotal();

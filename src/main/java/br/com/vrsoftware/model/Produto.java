@@ -23,6 +23,12 @@ public class Produto {
         this.preco = preco;
         this.quantidade = quantidade;
     }
+    public Produto(Integer id, String descricao, Double preco, Integer quantidade) {
+        this.id = id;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.quantidade = quantidade;
+    }
 
     
     public Integer getId() {

@@ -85,9 +85,10 @@ public class ClienteControllerTest {
         Mockito.when(clienteDao.findById(cliente.getNome())).thenReturn(cliente);
 
         //Action
-        controller.pegarCliente(cliente.getNome());
+        Cliente clienteEstornado = controller.pegarCliente(cliente.getNome());
         //Assertions
         Mockito.verify(clienteDao).findById(cliente.getNome());
+        org.junit.jupiter.api.Assertions.assertEquals(cliente,clienteEstornado);
     }
 
     @Test
@@ -112,7 +113,7 @@ public class ClienteControllerTest {
     @DisplayName("Deve retornar erro de argumento invalido na busca por cliente")
     public void naoDeveRetornarClientePorNomeInvalido(){
         //Arrange
-        String nome = null;
+        String nome = "";
 
         //Action
         ExceptionBussines exceptionBussines = assertThrows(ExceptionBussines.class, () ->{
@@ -128,16 +129,17 @@ public class ClienteControllerTest {
 
 
     @Test
-    @DisplayName("Deve retornar cliente por ID com sucesso")
+    @DisplayName("Deve retornar nome do cliente por ID com sucesso")
     public void deveRetornarClientePorId(){
         //Arrange
         Cliente cliente = new Cliente(1,"Julio");
         Mockito.when(clienteDao.findById(cliente.getId())).thenReturn(cliente);
 
         //Action
-        controller.pegarNomeCliente(cliente.getId());
+        Cliente clienteEstornado = controller.pegarNomeCliente(cliente.getId());
         //Assertions
         Mockito.verify(clienteDao).findById(cliente.getId());
+        org.junit.jupiter.api.Assertions.assertEquals(cliente,clienteEstornado);
     }
 
     @Test

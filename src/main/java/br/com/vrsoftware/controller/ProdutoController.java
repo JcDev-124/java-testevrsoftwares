@@ -36,49 +36,51 @@ public class ProdutoController {
         List<Produto> list = produtoDao.findAll();
         try {
             if (list == null) {
-                throw new ExceptionBussines("Erro ao retornar a lista");
+                throw new ExceptionBussines("Erro ao retornar a lista de produtos.");
             }
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new ExceptionBussines("Erro: " + e.getMessage());
         }
     }
 
     public Produto retornaProdutoPorNome(String nome) {
-        Produto produto = produtoDao.findById(nome);
         try {
+            if(nome == null || nome.isEmpty()) throw new ExceptionBussines("Argumento invalido.");
+
+            Produto produto = produtoDao.findById(nome);
             if(produto == null) throw new ExceptionBussines("Produto nao existe");
             return produto;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new ExceptionBussines("Erro: " + e.getMessage());
         }
     }
 
     public Produto retornaProdutoPorId(Integer id) {
-        Produto produto = produtoDao.findById(id);
         try {
+            if(id == null) throw new ExceptionBussines("Argumento invalido");
+            Produto produto = produtoDao.findById(id);
+
             if(produto == null) throw new ExceptionBussines("Produto nao existe");
             return produto;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new ExceptionBussines("Erro: " + e.getMessage());
         }
     }
 
     public void atualizaProduto(Produto obj) {
         try {
+            if (obj == null) throw new ExceptionBussines("Argumento invalido.");
+
             Produto produto = produtoDao.findById(obj.getDescricao());
             if (produto == null) {
                 JOptionPane.showMessageDialog(null, "Produto não cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
-
-                throw new ExceptionBussines("Produto não cadastrado.");
+                throw new ExceptionBussines("Produto nao cadastrado.");
 
             }
             produtoDao.update(obj);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ExceptionBussines("Erro: "+ e.getMessage());
         }
     }
 }

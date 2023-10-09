@@ -41,7 +41,7 @@ public class ClienteController {
 
     public Cliente pegarCliente(String nome) {
         try {
-            if(nome == null) throw new ExceptionBussines("Argumento invalido.");
+            if(nome == null || nome.isEmpty() ) throw new ExceptionBussines("Argumento invalido.");
             Cliente cliente = clienteDao.findById(nome);
             if (cliente != null) {
                 return cliente;
@@ -55,12 +55,12 @@ public class ClienteController {
         }
     }
 
-    public String pegarNomeCliente(Integer id) {
+    public Cliente pegarNomeCliente(Integer id) {
         try {
             if(id == null) throw new ExceptionBussines("Argumento invalido.");
             Cliente cliente = clienteDao.findById(id);
             if (cliente != null) {
-                return cliente.getNome();
+                return cliente;
             } else {
                 JOptionPane.showMessageDialog(null, "Cliente nao encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
 
