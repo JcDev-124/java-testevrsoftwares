@@ -47,7 +47,7 @@ public class ClienteControllerTest {
     @DisplayName("Deve retornar erro ao salvar quando receber um parametro null")
     public void naoDeveSalvarClienteComErroDeArgumento(){
         //Arrange
-        Cliente cliente = new Cliente();
+        Cliente cliente = null;
 
 
         //Action

@@ -83,7 +83,7 @@ public class OrdemVendasControllerTest {
     public void naoDeveRetornarLista(){
         //Arranges
         Integer id = null;
-    
+
         //Action
         ExceptionBussines exceptionBussines = assertThrows(ExceptionBussines.class, () ->{
             controller.retornaVendasPorId(id);
