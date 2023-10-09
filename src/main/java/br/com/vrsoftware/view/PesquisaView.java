@@ -4,6 +4,7 @@
  */
 package br.com.vrsoftware.view;
 
+import br.com.vrsoftware.Utils.FormatarData;
 import br.com.vrsoftware.model.EnumStatus;
 import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.model.Produto;
@@ -414,25 +415,22 @@ public class PesquisaView extends javax.swing.JFrame {
         Integer id_cliente;
         String nome_aux;
         Double valorTotal;
-        LocalDate date_aux;
+        String date_aux;
         EnumStatus status;
         VendasController controller = new VendasController();
         List<Vendas> vendas = controller.retornaTodasVendas();
         
         model = (DefaultTableModel) tblVendas.getModel();
         
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
+
         for (Vendas x : vendas) {
             id = x.getId();
             id_aux = x.getCliente();
-            
             nome_aux = controllerCliente.pegarNomeCliente(id_aux).getNome();
-            date_aux = x.getData();
-            String formattedDate = date_aux.format(formatter);  // Formatar a data
+            date_aux = FormatarData.formataData(LocalDate.now());
             valorTotal = x.getValorTotal();
             status = x.pegarStatus();
-            model.addRow(new Object[]{formattedDate, nome_aux, status, valorTotal, id});
+            model.addRow(new Object[]{date_aux, nome_aux, status, valorTotal, id});
         }
     }
     

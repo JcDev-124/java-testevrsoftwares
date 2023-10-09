@@ -4,6 +4,7 @@
  */
 package br.com.vrsoftware.view;
 
+import br.com.vrsoftware.Utils.FormatarData;
 import br.com.vrsoftware.model.EnumStatus;
 import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.model.Produto;
@@ -13,6 +14,8 @@ import br.com.vrsoftware.controller.OrdemVendasController;
 import br.com.vrsoftware.controller.ProdutoController;
 import br.com.vrsoftware.controller.VendasController;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
@@ -385,17 +388,13 @@ public class VendaView extends javax.swing.JFrame {
     }//GEN-LAST:event_btbRegistrarActionPerformed
 
 
-    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {
         model = (DefaultTableModel) tblProdutos.getModel();
         percorrerJTable(tblProdutos);
         atualizaEstoque(tblProdutos);
 
         ClienteController controller = new ClienteController();
         VendasController controllerVenda = new VendasController();
-
-        // Obter a data no formato "dd/MM/yyyy"
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String formattedDate = LocalDate.now().format(formatter);
 
         String cliente = txtCliente.getText();
         Integer id = controller.pegarCliente(cliente).getId();
@@ -404,7 +403,7 @@ public class VendaView extends javax.swing.JFrame {
         String valor = txtSubTotal.getText();
         Double valorTotal = Double.parseDouble(valor);
 
-        Vendas venda = new Vendas(LocalDate.parse(formattedDate, formatter), id, status, valorTotal);
+        Vendas venda = new Vendas(FormatarData.parseData(FormatarData.formataData(LocalDate.now())), id, status, valorTotal);
         controllerVenda.inserirVenda(venda);
 
         model.setRowCount(0);
@@ -488,48 +487,56 @@ public class VendaView extends javax.swing.JFrame {
     }
 
     private static void addChangeListenerProduto(JTextField textField, JButton btnSalvar, JLabel lblErro, JTextField lblPreco,
-            JTextField lblQuantidade, JTextField txtTotal) {
+                                                 JTextField lblQuantidade, JTextField txtTotal) {
+
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    textChanged(textField, btnSalvar, lblErro, lblPreco, lblQuantidade, txtTotal);
+                }
+            }
+        });
+
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                textChanged();
+                // No longer needed here
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                textChanged();
+                // No longer needed here
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                textChanged();
+                // No longer needed here
             }
-
-            private void textChanged() {
-                ProdutoController controller = new ProdutoController();
-                Produto produto = new Produto();
-
-                String descricao = textField.getText();
-                produto = controller.retornaProdutoPorNome(descricao);
-                if (produto != null) {
-                    String preco = produto.getPreco().toString();
-                    lblPreco.setText(preco);
-                    lblQuantidade.setText("1");
-                    Double total = Double.parseDouble(lblQuantidade.getText()) * produto.getPreco();
-                    txtTotal.setText(total.toString());
-                    btnSalvar.setEnabled(true);
-                    lblErro.setVisible(false);
-
-                } else {
-                    btnSalvar.setEnabled(false);
-                    lblErro.setVisible(true);
-
-                }
-
-            }
-
         });
     }
+
+    private static void textChanged(JTextField textField, JButton btnSalvar, JLabel lblErro, JTextField lblPreco,
+                                    JTextField lblQuantidade, JTextField txtTotal) {
+        ProdutoController controller = new ProdutoController();
+        Produto produto = new Produto();
+
+        String descricao = textField.getText();
+        produto = controller.retornaProdutoPorNome(descricao);
+        if (produto != null) {
+            String preco = produto.getPreco().toString();
+            lblPreco.setText(preco);
+            lblQuantidade.setText("1");
+            Double total = Double.parseDouble(lblQuantidade.getText()) * produto.getPreco();
+            txtTotal.setText(total.toString());
+            btnSalvar.setEnabled(true);
+            lblErro.setVisible(false);
+        } else {
+            btnSalvar.setEnabled(false);
+            lblErro.setVisible(true);
+        }
+    }
+
 
     private static void addChangeListenerQuantidade(JTextField textField, JButton btnSalvar, JLabel lblErroQuantidade) {
         textField.getDocument().addDocumentListener(new DocumentListener() {

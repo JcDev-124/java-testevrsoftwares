@@ -46,10 +46,15 @@ public class ProdutoController {
 
     public Produto retornaProdutoPorNome(String nome) {
         try {
-            if(nome == null || nome.isEmpty()) throw new ExceptionBussines("Argumento invalido.");
+            if(nome == null || nome.isEmpty()) {
+                throw new ExceptionBussines("Argumento invalido.");
+            }
 
             Produto produto = produtoDao.findById(nome);
-            if(produto == null) throw new ExceptionBussines("Produto nao existe");
+            if(produto == null) {
+                JOptionPane.showMessageDialog(null, "Produto nao cadastrado", "Aviso", JOptionPane.WARNING_MESSAGE);
+
+                throw new ExceptionBussines("Produto nao existe");}
             return produto;
         } catch (Exception e) {
             throw new ExceptionBussines("Erro: " + e.getMessage());
