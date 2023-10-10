@@ -1,4 +1,4 @@
-# Sistema de Gestão de Vendas - README
+# Sistema de Gestão de Vendas
 
 Este repositório contém a implementação de um Sistema de Gestão de Vendas desenvolvido em Java, atendendo os requisitos descritos. O sistema permite o cadastro de produtos, clientes e vendas, vinculação de produtos a vendas, controle de estoque, efetivação e estorno de vendas, consulta detalhada ou consolidada das vendas.
 
