@@ -2,7 +2,7 @@ package br.com.vrsoftware.dao.impl;
 
 import br.com.vrsoftware.model.Produto;
 import br.com.vrsoftware.dao.ProdutoDao;
-import br.com.vrsoftware.exceptions.db.DB;
+import br.com.vrsoftware.dao.conexao.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 
 import java.sql.Connection;

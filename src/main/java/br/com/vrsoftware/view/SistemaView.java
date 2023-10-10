@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package br.com.vrsoftware.view;
-import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 
-import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
+
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
+import javax.swing.UIManager.*;
 
 /**
  *
@@ -20,18 +21,7 @@ public class SistemaView extends javax.swing.JFrame {
      * Creates new form SistemaView
      */
     public SistemaView() {
-            // Definir tamanho da tela
-    int larguraTela = 500;
-    int alturaTela = 400;
-    this.setSize(larguraTela, alturaTela);
 
-    // Obter as dimensões da tela
-    Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-
-    // Calcular a localização para centralizar na tela
-    int x = (dimensoesTela.width - larguraTela) / 2;
-    int y = (dimensoesTela.height - alturaTela) / 2;
-    this.setLocation(x, y);
         initComponents();
     }
 
@@ -174,12 +164,6 @@ public class SistemaView extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
 
-        try {
-            UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SistemaView().setVisible(true);

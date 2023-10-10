@@ -1,4 +1,6 @@
-package br.com.vrsoftware.exceptions.db;
+package br.com.vrsoftware.dao.conexao;
+import br.com.vrsoftware.exceptions.db.DbException;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;

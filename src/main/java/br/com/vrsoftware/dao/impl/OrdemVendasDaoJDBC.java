@@ -7,7 +7,7 @@ package br.com.vrsoftware.dao.impl;
 // Importações omitidas para brevidade
 import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.dao.OrdemVendasDao;
-import br.com.vrsoftware.exceptions.db.DB;
+import br.com.vrsoftware.dao.conexao.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -5,7 +5,7 @@
 package br.com.vrsoftware.dao.impl;
 
 import br.com.vrsoftware.dao.MainDao;
-import br.com.vrsoftware.exceptions.db.DB;
+import br.com.vrsoftware.dao.conexao.DB;
 import br.com.vrsoftware.exceptions.db.DbException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
