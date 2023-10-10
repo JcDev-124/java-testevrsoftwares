@@ -2,13 +2,6 @@
 
 Este repositório contém a implementação de um Sistema de Gestão de Vendas desenvolvido em Java, atendendo os requisitos descritos. O sistema permite o cadastro de produtos, clientes e vendas, vinculação de produtos a vendas, controle de estoque, efetivação e estorno de vendas, consulta detalhada ou consolidada das vendas.
 
-## Requisitos
-
-- JDK: Versão 8 ou superior
-- Interface: Swing
-- Banco de dados: PostgreSQL
-- Frameworks: Nenhum (Java puro)
-- Versionamento
 
 ## Funcionalidades Implementadas
 
@@ -56,7 +49,7 @@ O projeto está estruturado de forma organizada, com separação de responsabili
 
 ## Inicialização da Aplicação
 
-- Certifique-se de ter o PostgreSQL instalado e configurado corretamente.
+- Certifique-se de ter o MYSQL instalado e configurado corretamente.
 - Importe o projeto no ambiente de desenvolvimento.
 - Execute a aplicação a partir da classe principal.
 
