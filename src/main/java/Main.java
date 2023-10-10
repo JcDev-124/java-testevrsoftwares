@@ -21,7 +21,7 @@ public class Main {
             v.setVisible(true);
             v.setLocationRelativeTo(null);
             MainDao dao = DaoFactory.createMainDao();
-            // dao.criarEstruturaBD();
+            dao.criarEstruturaBD();
             dao.criarTabelasBD();
             dao.criarTriggerDB();
 

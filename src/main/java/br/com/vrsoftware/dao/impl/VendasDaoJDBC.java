@@ -28,7 +28,8 @@ public class VendasDaoJDBC implements VendasDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO vendas (data, cliente_id, status, valorTotal) VALUES (?, ?, ?, ?) RETURNING ID"
+                    "INSERT INTO vendas (data, cliente_id, status, valorTotal) VALUES (?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS
             );
 
             st.setDate(1, obj.getData() != null ? Date.valueOf(obj.getData()) : null);
@@ -36,10 +37,15 @@ public class VendasDaoJDBC implements VendasDao {
             st.setString(3, obj.pegarStatus().name());
             st.setDouble(4, obj.getValorTotal());
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("ID");
-                obj.setId(id);
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
+                } else {
+                    throw new DbException("Erro inesperado! Nenhuma linha afetada!");
+                }
             } else {
                 throw new DbException("Erro inesperado! Nenhuma linha afetada!");
             }
@@ -53,7 +59,6 @@ public class VendasDaoJDBC implements VendasDao {
     @Override
     public void findByVenda(Integer id) {
         PreparedStatement updateStatement = null;
-        ResultSet rs = null;
 
         try {
             // Tenta atualizar o status para "DIGITANDO" diretamente para o ID
@@ -71,7 +76,6 @@ public class VendasDaoJDBC implements VendasDao {
             throw new DbException(e.getMessage());
         } finally {
             DB.CloseStatement(updateStatement);
-            DB.CloseResultSet(rs);
         }
     }
 
@@ -129,5 +133,4 @@ public class VendasDaoJDBC implements VendasDao {
             DB.CloseResultSet(rs);
         }
     }
-
 }

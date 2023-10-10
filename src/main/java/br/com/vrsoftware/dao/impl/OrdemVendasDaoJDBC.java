@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.vrsoftware.dao.impl;
 
-// Importações omitidas para brevidade
+
 import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.dao.OrdemVendasDao;
 import br.com.vrsoftware.dao.conexao.DB;
@@ -23,8 +19,6 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
     public OrdemVendasDaoJDBC(Connection conn) {
         this.conn = conn;
     }
-
-
 
     @Override
     public void insert(OrdemVenda ordemDeVenda) {
@@ -45,6 +39,7 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
             DB.CloseStatement(st);
         }
     }
+
     @Override
     public List<OrdemVenda> findAll(Integer idVenda) {
         PreparedStatement st = null;
@@ -78,6 +73,4 @@ public class OrdemVendasDaoJDBC implements OrdemVendasDao {
         ordemDeVenda.setPreco(rs.getDouble("preco"));
         return ordemDeVenda;
     }
-      
-
 }

@@ -25,17 +25,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO produtos (descricao, preco, quantidade) VALUES (?, ?, ?) RETURNING id"
+                    "INSERT INTO produtos (descricao, preco, quantidade) VALUES (?, ?, ?)"
             );
             st.setString(1, obj.getDescricao().toUpperCase());
             st.setDouble(2, obj.getPreco());
             st.setInt(3, obj.getQuantidade());
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                obj.setId(id);
-            } else {
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected == 0) {
                 throw new DbException("Erro inesperado! Nenhuma linha afetada!");
             }
         } catch (SQLException e) {
@@ -88,8 +85,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             DB.CloseResultSet(rs);
         }
     }
-    
-        @Override
+
+    @Override
     public Produto findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -141,5 +138,4 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             DB.CloseResultSet(rs);
         }
     }
-
 }

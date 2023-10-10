@@ -25,14 +25,19 @@ public class ClienteDaoJDBC implements ClienteDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO Clientes (Nome) VALUES (?) RETURNING Id"
+                    "INSERT INTO clientes (nome) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS
             );
             st.setString(1, obj.getNome().toUpperCase());
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("Id");
-                obj.setId(id);
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
+                } else {
+                    throw new DbException("Erro inesperado! Nenhuma linha afetada!");
+                }
             } else {
                 throw new DbException("Erro inesperado! Nenhuma linha afetada!");
             }
@@ -49,7 +54,7 @@ public class ClienteDaoJDBC implements ClienteDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM Clientes WHERE nome = ?");
+            st = conn.prepareStatement("SELECT * FROM clientes WHERE nome = ?");
             st.setString(1, nome.toUpperCase());
             rs = st.executeQuery();
             if (rs.next()) {
@@ -63,14 +68,14 @@ public class ClienteDaoJDBC implements ClienteDao {
             DB.CloseResultSet(rs);
         }
     }
-    
+
     @Override
     public Cliente findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM Clientes WHERE id = ?");
+            st = conn.prepareStatement("SELECT * FROM clientes WHERE id = ?");
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
@@ -87,8 +92,8 @@ public class ClienteDaoJDBC implements ClienteDao {
 
     private Cliente instantiateCliente(ResultSet rs) throws SQLException {
         Cliente obj = new Cliente();
-        obj.setId(rs.getInt("Id"));
-        obj.setNome(rs.getString("Nome"));
+        obj.setId(rs.getInt("id"));
+        obj.setNome(rs.getString("nome"));
         return obj;
     }
 
@@ -98,7 +103,7 @@ public class ClienteDaoJDBC implements ClienteDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM Clientes ORDER BY id");
+            st = conn.prepareStatement("SELECT * FROM clientes ORDER BY id");
             rs = st.executeQuery();
 
             List<Cliente> list = new ArrayList<>();
@@ -114,4 +119,5 @@ public class ClienteDaoJDBC implements ClienteDao {
             DB.CloseResultSet(rs);
         }
     }
+
 }
