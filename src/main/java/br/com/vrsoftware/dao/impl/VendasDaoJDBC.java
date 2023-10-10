@@ -113,7 +113,7 @@ public class VendasDaoJDBC implements VendasDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("SELECT * FROM vendas");
+            st = conn.prepareStatement("SELECT * FROM vendas ORDER BY id DESC;");
             rs = st.executeQuery();
 
             List<Vendas> list = new ArrayList<>();
