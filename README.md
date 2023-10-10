@@ -48,6 +48,7 @@ Este repositório contém a implementação de um Sistema de Gestão de Vendas d
 10. **Filtragem e Exibição Detalhada ou Consolidada**
    - O usuário pode filtrar as vendas por data.
    - Pode visualizar as vendas de forma consolidada ou detalhada.
+   - Para observas as vendas de forma detalhada basta clicar sobre alguma venda.
 
 ## Estrutura do Projeto
 
