@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +42,7 @@ public class ClienteControllerTest {
         //Assertions
         Mockito.verify(clienteDao).findById(cliente.getNome());
         Mockito.verify(clienteDao).insert(cliente);
-        org.junit.jupiter.api.Assertions.assertTrue(controller.inserirCliente(cliente));
+        assertTrue(controller.inserirCliente(cliente));
     }
 
     @Test
@@ -57,7 +58,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo
+        assertThat(exceptionBussines.getMessage()).isEqualTo
                 ("Erro ao inserir cliente: Argumento invalido.");
     }
 
@@ -74,7 +75,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo
+        assertThat(exceptionBussines.getMessage()).isEqualTo
                 ("Erro ao inserir cliente: Cliente já cadastrado.");
     }
 
@@ -89,7 +90,7 @@ public class ClienteControllerTest {
         Cliente clienteEstornado = controller.pegarCliente(cliente.getNome());
         //Assertions
         Mockito.verify(clienteDao).findById(cliente.getNome());
-        org.junit.jupiter.api.Assertions.assertEquals(cliente,clienteEstornado);
+        assertEquals(cliente,clienteEstornado);
     }
 
     @Test
@@ -104,7 +105,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
             "Erro ao obter cliente: Cliente não encontrado."
         );
 
@@ -122,7 +123,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
           "Erro ao obter cliente: Argumento invalido."
         );
     }
@@ -140,7 +141,7 @@ public class ClienteControllerTest {
         Cliente clienteEstornado = controller.pegarNomeCliente(cliente.getId());
         //Assertions
         Mockito.verify(clienteDao).findById(cliente.getId());
-        org.junit.jupiter.api.Assertions.assertEquals(cliente,clienteEstornado);
+        assertEquals(cliente,clienteEstornado);
     }
 
     @Test
@@ -157,7 +158,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
           "Erro ao obter nome do cliente: Cliente não encontrado."
         );
     }
@@ -174,7 +175,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
                 "Erro ao obter nome do cliente: Argumento invalido."
         );
     }
@@ -193,9 +194,9 @@ public class ClienteControllerTest {
         List<Cliente> clientesEstornados = controller.retornaTodosClientes();
 
         //Assertions
-        org.junit.jupiter.api.Assertions.assertNotNull(clientesEstornados);
-        org.junit.jupiter.api.Assertions.assertEquals(listClientes.size(), clientesEstornados.size());
-        org.junit.jupiter.api.Assertions.assertEquals(listClientes.get(0).getNome(), clientesEstornados.get(0).getNome());
+        assertNotNull(clientesEstornados);
+        assertEquals(listClientes.size(), clientesEstornados.size());
+        assertEquals(listClientes.get(0).getNome(), clientesEstornados.get(0).getNome());
     }
 
 
@@ -211,7 +212,7 @@ public class ClienteControllerTest {
         });
 
         //Assertions
-        Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
                 "Erro: Não foi possivel obter a lista de clientes."
         );
 

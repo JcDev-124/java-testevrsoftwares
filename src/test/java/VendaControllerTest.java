@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class VendaControllerTest {
@@ -79,8 +79,8 @@ public class VendaControllerTest {
         listVendasRetornadas = controller.retornaTodasVendas();
 
         //Assertions
-        org.junit.jupiter.api.Assertions.assertNotNull(listVendasRetornadas);
-        org.junit.jupiter.api.Assertions.assertEquals(listVendas,listVendasRetornadas);
+        assertNotNull(listVendasRetornadas);
+        assertEquals(listVendas,listVendasRetornadas);
 
     }
 

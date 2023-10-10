@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProdutoControllerTest {
@@ -43,7 +43,7 @@ public class ProdutoControllerTest {
         //Assertions
         Mockito.verify(produtoDao).findById(produto.getDescricao());
         Mockito.verify(produtoDao).insert(produto);
-        org.junit.jupiter.api.Assertions.assertTrue(controller.inserirProduto(produto));
+        assertTrue(controller.inserirProduto(produto));
     }
 
     @Test
@@ -95,9 +95,9 @@ public class ProdutoControllerTest {
         List<Produto> produtosEstornados = controller.retornaTodosProdutos();
 
         //Assertions
-        org.junit.jupiter.api.Assertions.assertNotNull(produtosEstornados);
-        org.junit.jupiter.api.Assertions.assertEquals(listProdutos.size(), produtosEstornados.size());
-        org.junit.jupiter.api.Assertions.assertEquals(listProdutos, produtosEstornados);
+        assertNotNull(produtosEstornados);
+        assertEquals(listProdutos.size(), produtosEstornados.size());
+        assertEquals(listProdutos, produtosEstornados);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ProdutoControllerTest {
 
         //Assertions
         Mockito.verify(produtoDao).findById(produto.getDescricao());
-        org.junit.jupiter.api.Assertions.assertEquals(produto, produtoRetornado);
+        assertEquals(produto, produtoRetornado);
     }
 
     @Test
@@ -184,7 +184,7 @@ public class ProdutoControllerTest {
 
         //Assertions
         Mockito.verify(produtoDao).findById(produto.getId());
-        org.junit.jupiter.api.Assertions.assertEquals(produto, produtoRetornado);
+        assertEquals(produto, produtoRetornado);
     }
     @Test
     @DisplayName("nao deve retornar produto por id null")

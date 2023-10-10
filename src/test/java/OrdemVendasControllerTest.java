@@ -13,7 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class OrdemVendasControllerTest {
@@ -37,7 +38,7 @@ public class OrdemVendasControllerTest {
         });
 
         //Assertions
-        org.assertj.core.api.Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
                 "Erro: Argumento invalido"
         );
     }
@@ -73,8 +74,8 @@ public class OrdemVendasControllerTest {
         listOrdemVendasRetornadas = controller.retornaVendasPorId(id);
 
         //Assertions
-        org.junit.jupiter.api.Assertions.assertNotNull(listOrdemVendasRetornadas);
-        org.junit.jupiter.api.Assertions.assertEquals(listOrdemVendas,listOrdemVendasRetornadas);
+        assertNotNull(listOrdemVendasRetornadas);
+        assertEquals(listOrdemVendas,listOrdemVendasRetornadas);
 
     }
 
@@ -90,7 +91,7 @@ public class OrdemVendasControllerTest {
         });
 
         //Assertions
-        org.assertj.core.api.Assertions.assertThat(exceptionBussines.getMessage()).isEqualTo(
+        assertThat(exceptionBussines.getMessage()).isEqualTo(
                 "Erro: Argumento invalido"
         );
 
