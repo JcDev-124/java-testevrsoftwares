@@ -2,6 +2,8 @@
 import br.com.vrsoftware.dao.DaoFactory;
 import br.com.vrsoftware.dao.MainDao;
 import br.com.vrsoftware.view.SistemaView;
+import com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -13,11 +15,10 @@ import br.com.vrsoftware.view.SistemaView;
  * @author Julio
  */
 public class Main {
-    
+
     public static void main(String[] args) {
-    
-        MainDao dao = DaoFactory.createMainDao();
-        dao.criarEstruturaBD();
+            MainDao dao = DaoFactory.createMainDao();
+        // dao.criarEstruturaBD();
         dao.criarTabelasBD();
         dao.criarTriggerDB();
         SistemaView v = new SistemaView();

@@ -1,4 +1,4 @@
-package br.com.vrsoftware.Utils;
+package br.com.vrsoftware.utils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

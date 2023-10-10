@@ -7,6 +7,7 @@ package br.com.vrsoftware.view;
 import br.com.vrsoftware.model.Cliente;
 import br.com.vrsoftware.controller.ClienteController;
 
+import java.awt.geom.FlatteningPathIterator;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public class ClienteView extends javax.swing.JFrame {
 
     private DefaultTableModel model;
+   
 
     /**
      * Creates new form ClienteView
@@ -38,9 +40,9 @@ public class ClienteView extends javax.swing.JFrame {
         carregarDadosTabela();
         
         //ocultando a coluna id
-        tblCliente.getColumnModel().getColumn(0).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(0).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(0).setWidth(0);
+        tblCliente.getColumnModel().getColumn(1).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(1).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(1).setWidth(0);
     }
 
     /**
@@ -111,7 +113,7 @@ public class ClienteView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Nome"
+                "Nome", "Id"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -175,8 +177,10 @@ public class ClienteView extends javax.swing.JFrame {
         lblErro.setText("");
 
         if (existe == true) {
-            model.addRow(new Object[]{controller.pegarCliente(nome).getId(), nome.toUpperCase()});
+            model.addRow(new Object[]{nome.toUpperCase(), controller.pegarCliente(nome).getId()});
         }
+
+        txtNome.setText("");
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -203,7 +207,7 @@ public class ClienteView extends javax.swing.JFrame {
             id_aux = x.getId();
             nome_aux = x.getNome();
 
-            model.addRow(new Object[]{id_aux, nome_aux});
+            model.addRow(new Object[]{nome_aux, id_aux});
         }
 
     }

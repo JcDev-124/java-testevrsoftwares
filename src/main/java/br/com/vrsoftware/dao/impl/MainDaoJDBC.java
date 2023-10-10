@@ -84,28 +84,39 @@ public class MainDaoJDBC implements MainDao {
 
     @Override
     public void criarTriggerDB() {
-
         PreparedStatement st = null;
 
         try {
+            // Drop the trigger and function if they exist
+            st = conn.prepareStatement("DROP TRIGGER IF EXISTS atualiza_id_venda_trigger ON vendas");
+            st.execute();
 
+            st = conn.prepareStatement("DROP FUNCTION IF EXISTS insere_id_venda_na_ordem()");
+            st.execute();
+
+            // Create the function
             st = conn.prepareStatement(
                     "CREATE OR REPLACE FUNCTION insere_id_venda_na_ordem() "
-                    + "RETURNS TRIGGER AS $$ "
-                    + "BEGIN "
-                    + "    UPDATE OrdemDeVenda "
-                    + "    SET id_venda = NEW.id "
-                    + "    WHERE id_venda IS NULL; "
-                    + "    RETURN NEW; "
-                    + "END; "
-                    + "$$ LANGUAGE plpgsql; "
-                    + "CREATE TRIGGER atualiza_id_venda_trigger "
-                    + "AFTER INSERT ON vendas "
-                    + "FOR EACH ROW "
-                    + "EXECUTE FUNCTION insere_id_venda_na_ordem();"
+                            + "RETURNS TRIGGER AS $$ "
+                            + "BEGIN "
+                            + "    UPDATE OrdemDeVenda "
+                            + "    SET id_venda = NEW.id "
+                            + "    WHERE id_venda IS NULL; "
+                            + "    RETURN NEW; "
+                            + "END; "
+                            + "$$ LANGUAGE plpgsql;"
             );
-            // Execute a query to create the database structure
             st.execute();
+
+            // Create the trigger
+            st = conn.prepareStatement(
+                    "CREATE TRIGGER atualiza_id_venda_trigger "
+                            + "AFTER INSERT ON vendas "
+                            + "FOR EACH ROW "
+                            + "EXECUTE FUNCTION insere_id_venda_na_ordem();"
+            );
+            st.execute();
+
         } catch (SQLException e) {
             throw new DbException("Erro ao criar o trigger no banco de dados: " + e.getMessage());
         } finally {

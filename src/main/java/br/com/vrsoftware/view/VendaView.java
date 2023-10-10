@@ -4,7 +4,7 @@
  */
 package br.com.vrsoftware.view;
 
-import br.com.vrsoftware.Utils.FormatarData;
+import br.com.vrsoftware.utils.FormatarData;
 import br.com.vrsoftware.model.EnumStatus;
 import br.com.vrsoftware.model.OrdemVenda;
 import br.com.vrsoftware.model.Produto;
@@ -17,7 +17,6 @@ import br.com.vrsoftware.controller.VendasController;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
